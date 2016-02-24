@@ -1,5 +1,6 @@
 package com.jiakaiyang.easyform;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         formView.setData(data);
         formView.fillForm();
+        formView.setRowBackgroundColor(0, Color.DKGRAY);
     }
 
     @Override

@@ -20,6 +20,8 @@
         </attr>
         <attr name="itemWidth" format="dimension" />
         <attr name="itemHeight" format="dimension"  />
+        <attr name="formItemTextSize" format="dimension" />
+        <attr name="formItemTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="BorderLinearLayout">

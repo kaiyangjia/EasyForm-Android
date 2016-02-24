@@ -15,14 +15,16 @@
 
     <com.jiakaiyang.library.easyform.view.EFFormView
         android:id="@+id/ef_form"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        jky:frameWidth="2dp"
+        jky:frameWidth="1dp"
         jky:frameColor="@android:color/darker_gray"
-        jky:dividerWidth="2dp"
+        jky:dividerWidth="1dp"
         jky:dividerColor="@android:color/black"
         jky:itemWidth="30dp"
         jky:itemHeight="20dp"
+        jky:formItemTextSize="14sp"
+        jky:formItemTextColor="#666666"
         jky:rowCount="3"
         jky:columnCount="4" >
 

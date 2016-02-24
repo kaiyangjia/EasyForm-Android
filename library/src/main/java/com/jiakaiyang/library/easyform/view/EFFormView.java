@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,6 +58,12 @@ public class EFFormView extends BorderLinearLayout {
     @Setter
     @Getter
     private int itemHeight;
+    @Setter
+    @Getter
+    private int formItemTextSize;
+    @Setter
+    @Getter
+    private int formItemTextColor;
 
     @Setter
     @Getter
@@ -72,6 +79,7 @@ public class EFFormView extends BorderLinearLayout {
     @Getter
     private List<Map<String, Object>> data;
     private List<BorderLinearLayout> formItemList;
+    private List<BorderLinearLayout> formRowList;
     private BorderLinearLayout itemView;
 
     public enum ITEM_LAYOUT {
@@ -100,6 +108,7 @@ public class EFFormView extends BorderLinearLayout {
         this.context = context;
         setData(new ArrayList<Map<String, Object>>());
         formItemList = new ArrayList<>();
+        formRowList = new ArrayList<>();
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.EFFormView, 0, 0);
 
@@ -134,6 +143,12 @@ public class EFFormView extends BorderLinearLayout {
         setItemWidth(a.getDimensionPixelSize(R.styleable.EFFormView_itemWidth, 0));
         setItemHeight(a.getDimensionPixelSize(R.styleable.EFFormView_itemHeight, 0));
 
+        setFormItemTextSize(a.getDimensionPixelSize(R.styleable.EFFormView_formItemTextSize, 0));
+        setFormItemTextColor(a.getColor(R.styleable.EFFormView_formItemTextColor, 0));
+
+        int textSize = getFormItemTextSize();
+        int textColor = getFormItemTextColor();
+        Log.e("测试", " " + textSize + "  " + textColor);
         a.recycle();
         init();
     }
@@ -176,6 +191,7 @@ public class EFFormView extends BorderLinearLayout {
 
                 rowView.addView(view);
                 formItemList.add(view);
+                formRowList.add(rowView);
             }
 
             //给出了第一个item之外的每一个设置左边界
@@ -203,13 +219,6 @@ public class EFFormView extends BorderLinearLayout {
         } else {
             return LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
         }
-    }
-
-    /**
-     * 添加边框
-     */
-    private void addFrame() {
-
     }
 
     public void fillForm() {
@@ -254,5 +263,17 @@ public class EFFormView extends BorderLinearLayout {
      */
     private boolean checkData() {
         return getData().size() == getColumnCount() * getRowCount();
+    }
+
+
+    /**
+     * 设置某行的背景色
+     * @param rowIndex 行号，从0开始记
+     * @param color 颜色
+     */
+    public void setRowBackgroundColor(int rowIndex, int color){
+        if(rowIndex < formRowList.size()){
+            formRowList.get(rowIndex).setBackgroundColor(color);
+        }
     }
 }
