@@ -23,6 +23,7 @@
         jky:dividerColor="@android:color/black"
         jky:itemWidth="30dp"
         jky:itemHeight="20dp"
+        jky:itemGravity="left"
         jky:formItemTextSize="14sp"
         jky:formItemTextColor="#666666"
         jky:rowCount="3"

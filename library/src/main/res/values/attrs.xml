@@ -20,6 +20,11 @@
         </attr>
         <attr name="itemWidth" format="dimension" />
         <attr name="itemHeight" format="dimension"  />
+        <attr name="itemGravity" format="enum" >
+            <enum name="center" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
         <attr name="formItemTextSize" format="dimension" />
         <attr name="formItemTextColor" format="color" />
     </declare-styleable>
