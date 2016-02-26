@@ -1,4 +1,4 @@
-package com.jiakaiyang.easyform.tools;
+package com.jiakaiyang.library.easyform.tools;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,28 +1,23 @@
 package com.jiakaiyang.easyform;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
-import com.jiakaiyang.easyform.tools.ResourcesTools;
 import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
-import com.jiakaiyang.library.easyform.tools.Constant;
+import com.jiakaiyang.library.easyform.tools.ResourcesTools;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
         ImageView iv = (ImageView) findViewById(R.id.iv);
 
-        List<Map<String, Object>> data = new ArrayList<>();
+        /*List<Map<String, Object>> data = new ArrayList<>();
         for(int i=0;i<12;i++){
             Map map = new HashMap();
             map.put(Constant.KEY.KEY_DATA, i + "--");
@@ -58,17 +53,20 @@ public class MainActivity extends AppCompatActivity {
 
         formView.setData(data);
         formView.fillForm();
-        formView.setRowBackgroundColor(0, Color.DKGRAY);
+        formView.setRowBackgroundColor(0, Color.DKGRAY);*/
 
         String jsonStr = ResourcesTools.getAssets(this, "form.json");
         try {
+            EFFormView efFormView = (EFFormView) findViewById(R.id.combination_form);
             JSONObject formJson = new JSONObject(jsonStr);
-            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(formJson);
-
-            simpleFormBuilder.getForm();
+            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(this, formJson, efFormView);
+            simpleFormBuilder.build();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        List<String> names = ResourcesTools.getAttrNames(this, R.styleable.EFFormView);
+        String name = R.styleable.class.getName();
     }
 
     @Override

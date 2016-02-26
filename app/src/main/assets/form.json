@@ -1,5 +1,8 @@
 {
-  "config":{},
+  "config":{
+    "row":2,
+    "column":2
+  },
   "form": [
     {
       "row": 0,
@@ -23,7 +26,9 @@
           "column": 0,
           "type": "form",
           "data": {
-            "config": { },
+            "config": {"row":2,
+              "column":2
+            },
             "form": [
               {
                 "row": 0,
@@ -45,16 +50,23 @@
                 "data": [
                   {
                     "column": 0,
-                    "type": "form",
-                    "data": {
-                      "config": { },
-                      "form": [ ]
-                    }
+                    "type": "text",
+                    "data": "shhs"
+                  },
+                  {
+                    "column": 1,
+                    "type": "text",
+                    "data": "shhs"
                   }
                 ]
               }
             ]
           }
+        },
+        {
+          "column":1,
+          "type":"text",
+          "data":"dhs"
         }
       ]
     }

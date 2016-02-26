@@ -1,6 +1,6 @@
 package com.jiakaiyang.library.easyform.core;
 
-import com.jiakaiyang.library.easyform.view.CombinationFormView;
+import com.jiakaiyang.library.easyform.view.EFFormView;
 
 /**
  * Created by kaiyangjia on 2016/2/24.
@@ -11,5 +11,5 @@ public interface FormBuilder {
 
     public void buildFormStructure();
 
-    public CombinationFormView getForm();
+    public EFFormView getForm();
 }

@@ -27,4 +27,20 @@ public class Constant {
 
         public static final String VALUE_FORM = "form";
     }
+
+    public class ATTR_EFFORM{
+        public static final String ATTR_FRAME_COLOR = "frameColor";
+        public static final String ATTR_FRAME_WIDTH = "frameWidth";
+        public static final String ATTR_DIVIDER_COLOR = "dividerColor";
+        public static final String ATTR_DIVIDER_WIDTH = "dividerWidth";
+        public static final String ATTR_ROW_COUNT = "rowCount";
+        public static final String ATTR_COLUMN_COUNT = "columnCount";
+        public static final String ATTR_ITEM_LAYOUT_HORIZONTAL = "itemLayoutHorizontal";
+        public static final String ATTR_ITEM_LAYOUT_VERTICAL = "itemLayoutVertical";
+        public static final String ATTR_ITEM_WIDTH = "itemWidth";
+        public static final String ATTR_ITEM_HEIGHT = "itemHeight";
+        public static final String ATTR_ITEM_GRAVITY = "itemGravity";
+        public static final String ATTR_FORM_ITEM_TEXT_SIZE = "formItemTextSize";
+        public static final String ATTR_FORM_ITEM_TEXT_COLOR = "formItemTextColor";
+    }
 }

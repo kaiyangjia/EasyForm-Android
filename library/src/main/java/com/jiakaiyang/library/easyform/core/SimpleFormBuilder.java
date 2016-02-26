@@ -1,47 +1,46 @@
 package com.jiakaiyang.library.easyform.core;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.jiakaiyang.library.easyform.tools.Constant;
-import com.jiakaiyang.library.easyform.view.CombinationFormView;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import lombok.Setter;
+
 /**
  * Created by kaiyangjia on 2016/2/25.
  */
 public class SimpleFormBuilder implements FormBuilder{
+    private Context context;
     private JSONObject formConfig;
     private JSONArray formStructure;
-    private CombinationFormView combinationFormView;
+    @Setter
+    private EFFormView rootFormView;
 
-    public SimpleFormBuilder(JSONObject formConfig, JSONArray formStructure) {
-        this.formConfig = formConfig;
-        this.formStructure = formStructure;
-
-        build();
-    }
-
-    public SimpleFormBuilder(JSONObject jsonObject){
+    public SimpleFormBuilder(Context context, JSONObject jsonObject, EFFormView rootFormView){
+        this.context = context;
         try {
             this.formConfig = jsonObject.getJSONObject(Constant.KEY.KEY_CONFIG);
             this.formStructure = jsonObject.getJSONArray(Constant.KEY.KEY_FORM);
+            this.rootFormView = rootFormView;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        build();
     }
 
-    private void build(){
+    public void build(){
         buildFormConfig();
         buildFormStructure();
     }
 
     @Override
     public void buildFormConfig() {
-
+        rootFormView.setConfig(formConfig);
     }
 
     @Override
@@ -57,20 +56,22 @@ public class SimpleFormBuilder implements FormBuilder{
                         JSONObject columnObject = rowArray.getJSONObject(j);
 
                         String type = columnObject.getString(Constant.KEY.KEY_TYPE);
+                        if(EFFormView.ITEM_TYPE.IMAGE.getValue().equals(type)){
 
-                        if(EFFormView.ITEM_TYPE.IMAGE.equals(type)){
+                        }else if(EFFormView.ITEM_TYPE.CUSTOM.getValue().equals(type)){
 
-                        }else if(EFFormView.ITEM_TYPE.CUSTOM.equals(type)){
-
-                        }else if(EFFormView.ITEM_TYPE.FORM.equals(type)){
+                        }else if(EFFormView.ITEM_TYPE.FORM.getValue().equals(type)){
                             JSONObject childForm = columnObject.getJSONObject(Constant.KEY.KEY_DATA);
-                            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(childForm);
-                            CombinationFormView c = simpleFormBuilder.getForm();
-                            //内部的EFFormView设置为无边框
-                            c.setBorderEnable(false);
-                            combinationFormView.setItem(i, j, c);
-                        }else{
+                            EFFormView tempFormView = rootFormView.getItem(i, j);
+                            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(context, childForm, tempFormView);
+                            simpleFormBuilder.build();
 
+                            //内部的EFFormView设置为无边框
+                            tempFormView.setBorderEnable(false);
+                        }else{
+                            String content = columnObject.getString(Constant.KEY.KEY_DATA);
+                            Log.e(" 文本 ", " ,,, " + content);
+                            rootFormView.setItem(i, j, content);
                         }
                     }
 
@@ -81,8 +82,9 @@ public class SimpleFormBuilder implements FormBuilder{
         }
     }
 
+
     @Override
-    public CombinationFormView getForm() {
-        return null;
+    public EFFormView getForm() {
+        return rootFormView;
     }
 }
