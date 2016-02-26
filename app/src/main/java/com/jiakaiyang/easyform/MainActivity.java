@@ -11,8 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.jiakaiyang.easyform.tools.ResourcesTools;
+import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.view.EFFormView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
         formView.setData(data);
         formView.fillForm();
         formView.setRowBackgroundColor(0, Color.DKGRAY);
+
+        String jsonStr = ResourcesTools.getAssets(this, "form.json");
+        try {
+            JSONObject formJson = new JSONObject(jsonStr);
+            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(formJson);
+
+            simpleFormBuilder.getForm();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@
         {
           "column": 1,
           "type": "text",
-          "data": "s"
+          "data": "ss"
         }
       ]
     },
@@ -24,7 +24,36 @@
           "type": "form",
           "data": {
             "config": { },
-            "form": [ ]
+            "form": [
+              {
+                "row": 0,
+                "data": [
+                  {
+                    "column": 0,
+                    "type": "text",
+                    "data": "s"
+                  },
+                  {
+                    "column": 1,
+                    "type": "text",
+                    "data": "ss"
+                  }
+                ]
+              },
+              {
+                "row": 1,
+                "data": [
+                  {
+                    "column": 0,
+                    "type": "form",
+                    "data": {
+                      "config": { },
+                      "form": [ ]
+                    }
+                  }
+                ]
+              }
+            ]
           }
         }
       ]

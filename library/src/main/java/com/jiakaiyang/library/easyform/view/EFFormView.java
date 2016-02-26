@@ -191,7 +191,6 @@ public class EFFormView extends BorderLinearLayout {
 
         int textSize = getFormItemTextSize();
         int textColor = getFormItemTextColor();
-        Log.e("测试", " " + textSize + "  " + textColor);
         a.recycle();
         init();
     }

@@ -47,7 +47,7 @@ public class SimpleFormBuilder implements FormBuilder{
     @Override
     public void buildFormStructure() {
         if(formStructure.length() > 0){
-            for(int i=0;i<formStructure.length();i++){
+            for(int i=0;i<formStructure .length();i++){
                 try {
                     JSONObject rowObject = formStructure.getJSONObject(i);
                     int rowIndex = rowObject.getInt(Constant.KEY.KEY_ROW);
@@ -66,6 +66,8 @@ public class SimpleFormBuilder implements FormBuilder{
                             JSONObject childForm = columnObject.getJSONObject(Constant.KEY.KEY_DATA);
                             SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(childForm);
                             CombinationFormView c = simpleFormBuilder.getForm();
+                            //内部的EFFormView设置为无边框
+                            c.setBorderEnable(false);
                             combinationFormView.setItem(i, j, c);
                         }else{
 
