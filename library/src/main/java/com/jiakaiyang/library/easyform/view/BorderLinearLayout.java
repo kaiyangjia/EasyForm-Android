@@ -24,7 +24,7 @@ public class BorderLinearLayout extends LinearLayout {
     private int mBoderTopSize = DEFAULT_BORDER_SIZE;
     private int mBoderRightSize = DEFAULT_BORDER_SIZE;
     private int mBoderBottomSize = DEFAULT_BORDER_SIZE;
-    private boolean isBorderEnable = true;;
+    private boolean isBorderEnable = true;
     private Paint borderPaint;
 
     public BorderLinearLayout(Context context, AttributeSet attrs) {

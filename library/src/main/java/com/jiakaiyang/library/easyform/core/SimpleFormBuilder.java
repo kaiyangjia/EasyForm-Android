@@ -1,7 +1,6 @@
 package com.jiakaiyang.library.easyform.core;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.view.EFFormView;
@@ -70,7 +69,6 @@ public class SimpleFormBuilder implements FormBuilder{
                             tempFormView.setBorderEnable(false);
                         }else{
                             String content = columnObject.getString(Constant.KEY.KEY_DATA);
-                            Log.e(" 文本 ", " ,,, " + content);
                             rootFormView.setItem(i, j, content);
                         }
                     }
@@ -80,11 +78,5 @@ public class SimpleFormBuilder implements FormBuilder{
                 }
             }
         }
-    }
-
-
-    @Override
-    public EFFormView getForm() {
-        return rootFormView;
     }
 }

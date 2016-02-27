@@ -2,9 +2,12 @@ package com.jiakaiyang.library.easyform.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +30,7 @@ import lombok.Setter;
 /**
  * Created by kaiyangjia on 2016/2/23.
  */
-public class EFFormView extends BorderLinearLayout {
+public class EFFormView extends BorderLinearLayout{
     private Context context;
     @Setter
     @Getter
@@ -83,10 +86,12 @@ public class EFFormView extends BorderLinearLayout {
     @Getter
     private List<Map<String, Object>> data;
     //所有单元格的链表
-    private List<EFFormView> formItemList;
+    @Setter @Getter private List<EFFormView> formItemList;
     //所有行的链表
-    private List<EFFormView> formRowList;
-    private BorderLinearLayout itemView;
+    @Setter @Getter private List<EFFormView> formRowList;
+    @Setter @Getter private OnItemClickListener onItemClickListener;
+    private int itemClicki;
+    private int itemClickj;
 
     public enum ITEM_LAYOUT {
         ALIQUOT(0), WRAP(1);
@@ -120,7 +125,7 @@ public class EFFormView extends BorderLinearLayout {
         }
     }
 
-    public enum ITEM_GRAVITY{
+    public enum ITEM_GRAVITY {
         CENTER(0), LEFT(1), RIGHT(2);
         private int value;
 
@@ -146,14 +151,13 @@ public class EFFormView extends BorderLinearLayout {
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.EFFormView, 0, 0);
 
-        JSONObject config = attrToJsonConfig(a);
+        initArgs(a);
         a.recycle();
-//        initArgs(config);
         init();
     }
 
 
-    private JSONObject attrToJsonConfig(TypedArray a){
+    private JSONObject attrToJsonConfig(TypedArray a) {
         List<String> names = ResourcesTools.getAttrNames(context, R.styleable.EFFormView);
 
         Map map = ResourcesTools.getResourceIntMap(context, "EFFormView", names, "styleable");
@@ -162,63 +166,59 @@ public class EFFormView extends BorderLinearLayout {
         return config;
     }
 
-   /* public void initArgs(JSONObject config){
-        try {
-            //获取边框颜色和宽度
-            setFrameColor(config.getInt("frameColor"));
-            setFrameWidth(a.getDimensionPixelSize(R.styleable.EFFormView_frameWidth, 0));
-            setBorderColor(getFrameColor());
-            int size = getFrameWidth();
-            setBorderSize(size, size, size, size);
+    public void initArgs(TypedArray a) {
+        //获取边框颜色和宽度
+        setFrameColor(a.getColor(R.styleable.EFFormView_frameColor, Color.WHITE));
+        setFrameWidth(a.getDimensionPixelSize(R.styleable.EFFormView_frameWidth, 0));
+        setBorderColor(getFrameColor());
+        int size = getFrameWidth();
+        setBorderSize(size, size, size, size);
 
-            //获取内部分割线的颜色和宽度
-            setDividerColor(a.getColor(R.styleable.EFFormView_dividerColor, Color.WHITE));
-            setDividerWidth(a.getDimensionPixelSize(R.styleable.EFFormView_dividerWidth, 0));
+        //获取内部分割线的颜色和宽度
+        setDividerColor(a.getColor(R.styleable.EFFormView_dividerColor, Color.WHITE));
+        setDividerWidth(a.getDimensionPixelSize(R.styleable.EFFormView_dividerWidth, 0));
 
-            setRowCount(a.getInt(R.styleable.EFFormView_rowCount, 0));
-            setColumnCount(a.getInt(R.styleable.EFFormView_columnCount, 0));
+        setRowCount(a.getInt(R.styleable.EFFormView_rowCount, 0));
+        setColumnCount(a.getInt(R.styleable.EFFormView_columnCount, 0));
 
-            //获取水平方向上的item排列
-            if (ITEM_LAYOUT.ALIQUOT.getValue() == a.getInt(R.styleable.EFFormView_itemLayoutHorizontal, 0)) {
-                setItemLayoutHorizontal(ITEM_LAYOUT.ALIQUOT);
-            } else {
-                setItemLayoutHorizontal(ITEM_LAYOUT.WRAP);
-            }
-
-            //获取竖直方向上的item排列
-            if (ITEM_LAYOUT.ALIQUOT.getValue() == a.getInt(R.styleable.EFFormView_itemLayoutVertical, 0)) {
-                setItemLayoutVertical(ITEM_LAYOUT.ALIQUOT);
-            } else {
-                setItemLayoutVertical(ITEM_LAYOUT.WRAP);
-            }
-
-            setItemWidth(a.getDimensionPixelSize(R.styleable.EFFormView_itemWidth, 0));
-            setItemHeight(a.getDimensionPixelSize(R.styleable.EFFormView_itemHeight, 0));
-
-            //获取表格item中内容的对齐方式，有左对齐，右对齐，居中。默认为居中对齐
-            int i = a.getInt(R.styleable.EFFormView_itemGravity, 0);
-            if(i == ITEM_GRAVITY.LEFT.getValue()){
-                setItemGravity(ITEM_GRAVITY.LEFT);
-            }else if(i == ITEM_GRAVITY.RIGHT.getValue()){
-                setItemGravity(ITEM_GRAVITY.LEFT);
-            }else{
-                setItemGravity(ITEM_GRAVITY.CENTER);
-            }
-
-            setFormItemTextSize(a.getDimensionPixelSize(R.styleable.EFFormView_formItemTextSize, 0));
-            setFormItemTextColor(a.getColor(R.styleable.EFFormView_formItemTextColor, 0));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        //获取水平方向上的item排列
+        if (ITEM_LAYOUT.ALIQUOT.getValue() == a.getInt(R.styleable.EFFormView_itemLayoutHorizontal, 0)) {
+            setItemLayoutHorizontal(ITEM_LAYOUT.ALIQUOT);
+        } else {
+            setItemLayoutHorizontal(ITEM_LAYOUT.WRAP);
         }
 
-    }*/
+        //获取竖直方向上的item排列
+        if (ITEM_LAYOUT.ALIQUOT.getValue() == a.getInt(R.styleable.EFFormView_itemLayoutVertical, 0)) {
+            setItemLayoutVertical(ITEM_LAYOUT.ALIQUOT);
+        } else {
+            setItemLayoutVertical(ITEM_LAYOUT.WRAP);
+        }
+
+        setItemWidth(a.getDimensionPixelSize(R.styleable.EFFormView_itemWidth, 0));
+        setItemHeight(a.getDimensionPixelSize(R.styleable.EFFormView_itemHeight, 0));
+
+        //获取表格item中内容的对齐方式，有左对齐，右对齐，居中。默认为居中对齐
+        int i = a.getInt(R.styleable.EFFormView_itemGravity, 0);
+        if (i == ITEM_GRAVITY.LEFT.getValue()) {
+            setItemGravity(ITEM_GRAVITY.LEFT);
+        } else if (i == ITEM_GRAVITY.RIGHT.getValue()) {
+            setItemGravity(ITEM_GRAVITY.LEFT);
+        } else {
+            setItemGravity(ITEM_GRAVITY.CENTER);
+        }
+
+        setFormItemTextSize(a.getDimensionPixelSize(R.styleable.EFFormView_formItemTextSize, 0));
+        setFormItemTextColor(a.getColor(R.styleable.EFFormView_formItemTextColor, 0));
+    }
 
 
     /**
      * 动态给表格设置配置信息
+     *
      * @param formConfig
      */
-    public void setConfig(JSONObject formConfig){
+    public void setConfig(JSONObject formConfig) {
         setRowCount(formConfig.optInt(Constant.KEY.KEY_ROW));
         setColumnCount(formConfig.optInt(Constant.KEY.KEY_COLUMN));
 
@@ -232,6 +232,18 @@ public class EFFormView extends BorderLinearLayout {
         setItemLayoutImageRes(R.layout.item_image);
         setItemLayoutCustomRes(R.layout.item_text);
         setOrientation(LinearLayout.VERTICAL);
+        this.setClickable(true);
+        View.OnClickListener listener = new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Log.e("子view", "click");
+                if(getOnItemClickListener() != null){
+                    EFFormView efFormView = (EFFormView) v;
+                    getOnItemClickListener().onClick(efFormView);
+                }
+            }
+        };
 
         for (int i = 0; i < getRowCount(); i++) {
             EFFormView rowView = (EFFormView) LayoutInflater.from(context).inflate(R.layout.form_row, null);
@@ -241,14 +253,16 @@ public class EFFormView extends BorderLinearLayout {
             for (int j = 0; j < getColumnCount(); j++) {
                 EFFormView view = getItemView(i, j, ITEM_TYPE.TEXT);
                 view.setBorderColor(getDividerColor());
+                view.setOnClickListener(listener);
+
 
                 // 设置item尺寸的时候
-                if(getItemHeight() > 0
-                        && getItemWidth() > 0){
+                if (getItemHeight() > 0
+                        && getItemWidth() > 0) {
                     LinearLayout.LayoutParams params = new LayoutParams(getItemWidth()
                             , getItemHeight(), 0.5f);
                     view.setLayoutParams(params);
-                }else{
+                } else {
                     if (getItemLayoutHorizontal() == ITEM_LAYOUT.ALIQUOT) {
                         LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT
                                 , LayoutParams.WRAP_CONTENT, 0.5f);
@@ -265,7 +279,6 @@ public class EFFormView extends BorderLinearLayout {
 
                 rowView.addView(view);
                 formItemList.add(view);
-                formRowList.add(rowView);
             }
 
             //给出了第一个item之外的每一个设置左边界
@@ -273,6 +286,7 @@ public class EFFormView extends BorderLinearLayout {
                 rowView.setBorderSize(0, getDividerWidth(), 0, 0);
             }
             addView(rowView);
+            formRowList.add(rowView);
         }
     }
 
@@ -287,9 +301,9 @@ public class EFFormView extends BorderLinearLayout {
         int gravity = Gravity.CENTER;
         EFFormView view;
 
-        if(getItemGravity() == ITEM_GRAVITY.LEFT){
+        if (getItemGravity() == ITEM_GRAVITY.LEFT) {
             gravity = Gravity.LEFT;
-        }else if(getItemGravity() == ITEM_GRAVITY.RIGHT){
+        } else if (getItemGravity() == ITEM_GRAVITY.RIGHT) {
             gravity = Gravity.RIGHT;
         }
 
@@ -298,7 +312,7 @@ public class EFFormView extends BorderLinearLayout {
         } else if (itemType == ITEM_TYPE.CUSTOM) {
             //TODO 添加添加自定义视图的实现
             view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutCustomRes(), null);
-        }  else if (itemType == ITEM_TYPE.FORM) {
+        } else if (itemType == ITEM_TYPE.FORM) {
             //TODO 添加子表格
             view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
         } else {
@@ -341,7 +355,7 @@ public class EFFormView extends BorderLinearLayout {
                     Picasso.with(context).load(itemValue).into(iv);
                 } else if (itemType == ITEM_TYPE.CUSTOM) {
                     //TODO
-                }else if (itemType == ITEM_TYPE.FORM) {
+                } else if (itemType == ITEM_TYPE.FORM) {
                     //TODO
                 }
             }
@@ -360,25 +374,66 @@ public class EFFormView extends BorderLinearLayout {
 
     /**
      * 设置某行的背景色
+     *
      * @param rowIndex 行号，从0开始记
-     * @param color 颜色
+     * @param color    颜色
      */
-    public void setRowBackgroundColor(int rowIndex, int color){
-        if(rowIndex < formRowList.size()){
+    public void setRowBackgroundColor(int rowIndex, int color) {
+        if (rowIndex < formRowList.size()) {
             formRowList.get(rowIndex).setBackgroundColor(color);
         }
     }
 
 
     /**
+     * 设置某一行为一种颜色，其他行为另外一种颜色
+     * @param rowIndex
+     * @param color
+     * @param otherColor
+     */
+    public void setRowBackgroundColorOnly(int rowIndex, int color, int otherColor) {
+        if (rowIndex < formRowList.size()) {
+            formRowList.get(rowIndex).setBackgroundColor(color);
+            for(int i=0;i<formRowList.size();i++){
+                if(i != rowIndex){
+                    formRowList.get(i).setBackgroundColor(otherColor);
+                }
+            }
+        }
+        invalidate();
+    }
+
+
+    /**
+     * 设置某行的背景色
+     *
+     * @param rowIndex 行号，从0开始记
+     * @param resId   行背景
+     */
+    public void setRowBackgroundResource(int rowIndex, int resId) {
+        if (rowIndex < formRowList.size()) {
+            formRowList.get(rowIndex).setBackgroundResource(resId);
+        }
+    }
+
+
+    public void setRowBackgroundResource(int resId) {
+        for(EFFormView view : formRowList){
+            view.setBackgroundResource(resId);
+        }
+    }
+
+
+    /**
      * 设置某一个单元格为
+     *
      * @param rowIndex
      * @param columnIndex
      * @param itemFormView
      */
-    public void setItem(int rowIndex,int columnIndex, EFFormView itemFormView){
+    public void setItem(int rowIndex, int columnIndex, EFFormView itemFormView) {
         int index = rowIndex * getColumnCount() + columnIndex;
-        if(index < formItemList.size()){
+        if (index < formItemList.size()) {
             formItemList.set(index, itemFormView);
         }
     }
@@ -386,13 +441,14 @@ public class EFFormView extends BorderLinearLayout {
 
     /**
      * 设置某一个单元格的文本
+     *
      * @param rowIndex
      * @param columnIndex
      * @param content
      */
-    public void setItem(int rowIndex,int columnIndex, String content){
+    public void setItem(int rowIndex, int columnIndex, String content) {
         int index = rowIndex * getColumnCount() + columnIndex;
-        if(index < formItemList.size()){
+        if (index < formItemList.size()) {
             TextView tv = (TextView) formItemList.get(index).findViewById(R.id.ef_item_text);
             tv.setText(content);
         }
@@ -401,14 +457,15 @@ public class EFFormView extends BorderLinearLayout {
 
     /**
      * 获取某一个单元格
+     *
      * @param rowIndex
      * @param columnIndex
      * @return
      */
-    public EFFormView getItem(int rowIndex,int columnIndex){
+    public EFFormView getItem(int rowIndex, int columnIndex) {
         int index = rowIndex * getColumnCount() + columnIndex;
         EFFormView item = null;
-        if(index < formItemList.size()){
+        if (index < formItemList.size()) {
             item = formItemList.get(index);
         }
 
@@ -417,15 +474,20 @@ public class EFFormView extends BorderLinearLayout {
 
     /**
      * 获取某一行的View
+     *
      * @param rowIndex
      * @return
      */
-    public EFFormView getRowView(int rowIndex){
+    public EFFormView getRowView(int rowIndex) {
         EFFormView row = null;
-        if(rowIndex < formRowList.size()){
+        if (rowIndex < formRowList.size()) {
             row = formRowList.get(rowIndex);
         }
 
         return row;
+    }
+
+    public interface OnItemClickListener{
+        public void onClick(EFFormView itemView);
     }
 }
