@@ -1,6 +1,7 @@
 .gradle
 .idea
 .git
+*.iml
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
