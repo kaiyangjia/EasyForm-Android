@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 formView.setRowTextColorOnly(i, Color.WHITE);
             }
         });
+        formView.setRowClickable(0, false);
 
         String jsonStr = ResourcesTools.getAssets(this, "form.json");
         try {

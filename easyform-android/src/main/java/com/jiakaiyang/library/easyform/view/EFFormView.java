@@ -492,6 +492,19 @@ public class EFFormView extends BorderLinearLayout{
 
 
     /**
+     * 设置某一行是否可以点击
+     * @param rowIndex
+     * @param clickable
+     */
+    public void setRowClickable(int rowIndex, boolean clickable){
+        getRowView(rowIndex).setClickable(false);
+        for(int i=rowIndex;i<(rowIndex + 1)*getColumnCount();i++){
+            getItem(rowIndex, i).setClickable(false);
+        }
+    }
+
+
+    /**
      * 设置某一个单元格为
      *
      * @param rowIndex
