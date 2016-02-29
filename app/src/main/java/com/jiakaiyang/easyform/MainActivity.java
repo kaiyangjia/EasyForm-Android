@@ -1,5 +1,6 @@
 package com.jiakaiyang.easyform;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
+import com.jiakaiyang.library.easyform.view.BorderLinearLayout;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONException;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         formView.fillForm();
         formView.setOnItemClickListener(new EFFormView.OnItemClickListener() {
             @Override
-            public void onClick(EFFormView itemView) {
+            public void onClick(BorderLinearLayout itemView) {
                 //使表格的某一行点击时会有颜色变化
                 int i = formView.getFormItemList().indexOf(itemView);
                 i = i / formView.getColumnCount();
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                             , getResources().getColor(R.color.light_blue)
                             , getResources().getColor(R.color.light_gray));
                 }
+
+                formView.setRowTextColorOnly(i, Color.WHITE);
             }
         });
 

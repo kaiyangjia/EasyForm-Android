@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import lombok.Setter;
  * Created by kaiyangjia on 2016/2/23.
  */
 public class EFFormView extends BorderLinearLayout{
+    private static String TAG = "EFFormView";
     private Context context;
     @Setter
     @Getter
@@ -81,17 +83,16 @@ public class EFFormView extends BorderLinearLayout{
     @Setter
     @Getter
     private int itemLayoutCustomRes;
+    @Setter @Getter private List<Map<String, Object>> formTitleNames;
 
     @Setter
     @Getter
     private List<Map<String, Object>> data;
     //所有单元格的链表
-    @Setter @Getter private List<EFFormView> formItemList;
+    @Setter @Getter private List<BorderLinearLayout> formItemList;
     //所有行的链表
-    @Setter @Getter private List<EFFormView> formRowList;
+    @Setter @Getter private List<BorderLinearLayout> formRowList;
     @Setter @Getter private OnItemClickListener onItemClickListener;
-    private int itemClicki;
-    private int itemClickj;
 
     public enum ITEM_LAYOUT {
         ALIQUOT(0), WRAP(1);
@@ -148,6 +149,7 @@ public class EFFormView extends BorderLinearLayout{
         setData(new ArrayList<Map<String, Object>>());
         formItemList = new ArrayList<>();
         formRowList = new ArrayList<>();
+        formTitleNames = new ArrayList<>();
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.EFFormView, 0, 0);
 
@@ -156,6 +158,10 @@ public class EFFormView extends BorderLinearLayout{
         init();
     }
 
+    public void resetArgs(){
+        init();
+        invalidate();
+    }
 
     private JSONObject attrToJsonConfig(TypedArray a) {
         List<String> names = ResourcesTools.getAttrNames(context, R.styleable.EFFormView);
@@ -198,6 +204,8 @@ public class EFFormView extends BorderLinearLayout{
         setItemWidth(a.getDimensionPixelSize(R.styleable.EFFormView_itemWidth, 0));
         setItemHeight(a.getDimensionPixelSize(R.styleable.EFFormView_itemHeight, 0));
 
+        initFormTitle(a);
+
         //获取表格item中内容的对齐方式，有左对齐，右对齐，居中。默认为居中对齐
         int i = a.getInt(R.styleable.EFFormView_itemGravity, 0);
         if (i == ITEM_GRAVITY.LEFT.getValue()) {
@@ -212,6 +220,23 @@ public class EFFormView extends BorderLinearLayout{
         setFormItemTextColor(a.getColor(R.styleable.EFFormView_formItemTextColor, 0));
     }
 
+
+    private void initFormTitle(TypedArray a){
+        String names = a.getString(R.styleable.EFFormView_formTitleNames);
+        if(names != null){
+            String[] namesArray = names.split(",");
+
+            if(namesArray.length == getColumnCount()){
+                for(int i=0;i<namesArray.length;i++){
+                    Map map = new HashMap();
+                    map.put(Constant.KEY.KEY_DATA, namesArray[i]);
+                    getFormTitleNames().add(map);
+                }
+            }else{
+                Log.e(TAG, "attr formTitleNames is wrong");
+            }
+        }
+    }
 
     /**
      * 动态给表格设置配置信息
@@ -239,19 +264,19 @@ public class EFFormView extends BorderLinearLayout{
             public void onClick(View v) {
                 Log.e("子view", "click");
                 if(getOnItemClickListener() != null){
-                    EFFormView efFormView = (EFFormView) v;
+                    BorderLinearLayout efFormView = (BorderLinearLayout) v;
                     getOnItemClickListener().onClick(efFormView);
                 }
             }
         };
 
         for (int i = 0; i < getRowCount(); i++) {
-            EFFormView rowView = (EFFormView) LayoutInflater.from(context).inflate(R.layout.form_row, null);
+            BorderLinearLayout rowView = (BorderLinearLayout) LayoutInflater.from(context).inflate(R.layout.form_row, null);
             rowView.setOrientation(LinearLayout.HORIZONTAL);
             rowView.setBorderColor(getDividerColor());
 
             for (int j = 0; j < getColumnCount(); j++) {
-                EFFormView view = getItemView(i, j, ITEM_TYPE.TEXT);
+                BorderLinearLayout view = getItemView(i, j, ITEM_TYPE.TEXT);
                 view.setBorderColor(getDividerColor());
                 view.setOnClickListener(listener);
 
@@ -297,9 +322,9 @@ public class EFFormView extends BorderLinearLayout{
      * @param j item 的纵坐标，从0开始
      * @return
      */
-    private EFFormView getItemView(int i, int j, ITEM_TYPE itemType) {
+    private BorderLinearLayout getItemView(int i, int j, ITEM_TYPE itemType) {
         int gravity = Gravity.CENTER;
-        EFFormView view;
+        BorderLinearLayout view;
 
         if (getItemGravity() == ITEM_GRAVITY.LEFT) {
             gravity = Gravity.LEFT;
@@ -308,15 +333,15 @@ public class EFFormView extends BorderLinearLayout{
         }
 
         if (itemType == ITEM_TYPE.IMAGE) {
-            view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutImageRes(), null);
+            view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutImageRes(), null);
         } else if (itemType == ITEM_TYPE.CUSTOM) {
             //TODO 添加添加自定义视图的实现
-            view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutCustomRes(), null);
+            view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutCustomRes(), null);
         } else if (itemType == ITEM_TYPE.FORM) {
             //TODO 添加子表格
-            view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
+            view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
         } else {
-            view = (EFFormView) LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
+            view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutTextRes(), null);
         }
 
         view.setGravity(gravity);
@@ -328,7 +353,11 @@ public class EFFormView extends BorderLinearLayout{
             for (int j = 0; j < formItemList.size(); j++) {
                 BorderLinearLayout itemView = formItemList.get(j);
 
-                Map itemData = getData().get(j);
+                List<Map<String, Object>> tempData = new ArrayList<>();
+                tempData.addAll(getFormTitleNames());
+                tempData.addAll(getData());
+
+                Map itemData = tempData.get(j);
                 String itemValue = "";
                 ITEM_TYPE itemType = ITEM_TYPE.TEXT;
 
@@ -350,6 +379,10 @@ public class EFFormView extends BorderLinearLayout{
                 if (itemType == ITEM_TYPE.TEXT) {
                     TextView tv = (TextView) itemView.findViewById(R.id.ef_item_text);
                     tv.setText(itemValue);
+                    tv.setTextColor(getFormItemTextColor());
+                    if(getFormItemTextSize() > 0){
+                        tv.setTextSize(getFormItemTextSize());
+                    }
                 } else if (itemType == ITEM_TYPE.IMAGE) {
                     ImageView iv = (ImageView) itemView.findViewById(R.id.ef_item_image);
                     Picasso.with(context).load(itemValue).into(iv);
@@ -359,6 +392,8 @@ public class EFFormView extends BorderLinearLayout{
                     //TODO
                 }
             }
+        }else{
+            Log.e(TAG, "Check data error");
         }
     }
 
@@ -368,7 +403,7 @@ public class EFFormView extends BorderLinearLayout{
      * @return
      */
     private boolean checkData() {
-        return getData().size() == getColumnCount() * getRowCount();
+        return getData().size() + getFormTitleNames().size() == getColumnCount() * getRowCount();
     }
 
 
@@ -403,7 +438,6 @@ public class EFFormView extends BorderLinearLayout{
         invalidate();
     }
 
-
     /**
      * 设置某行的背景色
      *
@@ -418,8 +452,41 @@ public class EFFormView extends BorderLinearLayout{
 
 
     public void setRowBackgroundResource(int resId) {
-        for(EFFormView view : formRowList){
+        for(BorderLinearLayout view : formRowList){
             view.setBackgroundResource(resId);
+        }
+    }
+
+
+    /**
+     * 设置某一行中字体的颜色
+     * @param rowIndex
+     * @param color
+     */
+    public void setRowTextColorOnly(int rowIndex, int color){
+        int start = rowIndex * getColumnCount();
+
+        Log.e("测试", start + ",,," + getFormItemTextSize());
+        for(int i = 0; i<getFormItemList().size();i++){
+            List<Map> tempData = new ArrayList<>();
+            tempData.addAll(getFormTitleNames());
+            tempData.addAll(getData());
+
+            Map map = tempData.get(i);
+
+            boolean isText = !map.containsKey(Constant.KEY.KEY_TYPE)
+                    || (map.containsKey(Constant.KEY.KEY_TYPE)
+                    && map.get(Constant.KEY.KEY_TYPE).equals(Constant.VALUE.VALUE_TEXT));
+            if(isText){
+                TextView tv = (TextView) getFormItemList().get(i).findViewById(R.id.ef_item_text);
+                //需要改变颜色的单元格
+                if(i>=start
+                        && i<start + getColumnCount()){
+                    tv.setTextColor(color);
+                }else{// 需要设置为默认颜色的单元格
+                    tv.setTextColor(getFormItemTextColor());
+                }
+            }
         }
     }
 
@@ -431,7 +498,7 @@ public class EFFormView extends BorderLinearLayout{
      * @param columnIndex
      * @param itemFormView
      */
-    public void setItem(int rowIndex, int columnIndex, EFFormView itemFormView) {
+    public void setItem(int rowIndex, int columnIndex, BorderLinearLayout itemFormView) {
         int index = rowIndex * getColumnCount() + columnIndex;
         if (index < formItemList.size()) {
             formItemList.set(index, itemFormView);
@@ -462,9 +529,9 @@ public class EFFormView extends BorderLinearLayout{
      * @param columnIndex
      * @return
      */
-    public EFFormView getItem(int rowIndex, int columnIndex) {
+    public BorderLinearLayout getItem(int rowIndex, int columnIndex) {
         int index = rowIndex * getColumnCount() + columnIndex;
-        EFFormView item = null;
+        BorderLinearLayout item = null;
         if (index < formItemList.size()) {
             item = formItemList.get(index);
         }
@@ -478,8 +545,8 @@ public class EFFormView extends BorderLinearLayout{
      * @param rowIndex
      * @return
      */
-    public EFFormView getRowView(int rowIndex) {
-        EFFormView row = null;
+    public BorderLinearLayout getRowView(int rowIndex) {
+        BorderLinearLayout row = null;
         if (rowIndex < formRowList.size()) {
             row = formRowList.get(rowIndex);
         }
@@ -488,6 +555,6 @@ public class EFFormView extends BorderLinearLayout{
     }
 
     public interface OnItemClickListener{
-        public void onClick(EFFormView itemView);
+        public void onClick(BorderLinearLayout itemView);
     }
 }

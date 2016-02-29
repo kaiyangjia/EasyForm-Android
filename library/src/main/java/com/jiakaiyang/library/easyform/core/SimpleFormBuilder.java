@@ -3,6 +3,7 @@ package com.jiakaiyang.library.easyform.core;
 import android.content.Context;
 
 import com.jiakaiyang.library.easyform.tools.Constant;
+import com.jiakaiyang.library.easyform.view.BorderLinearLayout;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONArray;
@@ -20,21 +21,28 @@ public class SimpleFormBuilder implements FormBuilder{
     private JSONArray formStructure;
     @Setter
     private EFFormView rootFormView;
+    private boolean isBuilderEnabled;
 
-    public SimpleFormBuilder(Context context, JSONObject jsonObject, EFFormView rootFormView){
+    public SimpleFormBuilder(Context context, JSONObject jsonObject, BorderLinearLayout rootFormView){
         this.context = context;
         try {
             this.formConfig = jsonObject.getJSONObject(Constant.KEY.KEY_CONFIG);
             this.formStructure = jsonObject.getJSONArray(Constant.KEY.KEY_FORM);
-            this.rootFormView = rootFormView;
+            this.rootFormView = (EFFormView) rootFormView;
+            isBuilderEnabled = true;
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ClassCastException e){
+            e.printStackTrace();
+            isBuilderEnabled = false;
         }
     }
 
     public void build(){
-        buildFormConfig();
-        buildFormStructure();
+        if(isBuilderEnabled){
+            buildFormConfig();
+            buildFormStructure();
+        }
     }
 
     @Override
@@ -61,7 +69,7 @@ public class SimpleFormBuilder implements FormBuilder{
 
                         }else if(EFFormView.ITEM_TYPE.FORM.getValue().equals(type)){
                             JSONObject childForm = columnObject.getJSONObject(Constant.KEY.KEY_DATA);
-                            EFFormView tempFormView = rootFormView.getItem(i, j);
+                            BorderLinearLayout tempFormView = rootFormView.getItem(i, j);
                             SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(context, childForm, tempFormView);
                             simpleFormBuilder.build();
 
