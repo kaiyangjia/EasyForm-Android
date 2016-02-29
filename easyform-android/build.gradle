@@ -33,7 +33,7 @@ ext {
     publishedGroupId = 'com.jiakaiyang'//JCenter的GroupId
     artifact = 'easyform-android'//JCenter的ArtifactId
 
-    siteUrl = 'https://github.com/kaiyangjia/EasyForm-Android'
+    siteUrl = 'http://jiakaiyang.com'
     gitUrl = 'https://github.com/kaiyangjia/EasyForm-Android'
 
     libraryVersion = '0.9.0'//版本号

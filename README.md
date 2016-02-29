@@ -12,3 +12,74 @@
 
 >2.自定义item布局时，填充文字的view中必须包含有id为ef_item_text 的TextView的控件；填充图片的view中必须
 >包含id为ef_item_image的imageView的控件。
+
+>3.在使用前请先阅读doc目录下的文档了解该项目.
+
+
+4.Useage:
+
+    1.在布局文件中使用如下配置：
+    
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      xmlns:jky="http://schemas.android.com/apk/res-auto"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingBottom="@dimen/activity_vertical_margin"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      android:paddingTop="@dimen/activity_vertical_margin"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      tools:context=".MainActivity"
+      tools:showIn="@layout/activity_main">
+      
+          <com.jiakaiyang.library.easyform.view.EFFormView
+              android:id="@+id/ef_form"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              jky:formTitleNames="title1,title2,title3,title4"
+              jky:frameWidth="1dp"
+              jky:frameColor="@android:color/darker_gray"
+              jky:dividerWidth="1dp"
+              jky:dividerColor="@android:color/darker_gray"
+              jky:itemWidth="30dp"
+              jky:itemHeight="40dp"
+              jky:itemGravity="center"
+              jky:formItemTextColor="#666666"
+              jky:rowCount="4"
+              jky:columnCount="4" >
+      
+          </com.jiakaiyang.library.easyform.view.EFFormView>
+    </RelativeLayout>
+    
+    
+    2.在Activity的代码中：
+    final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
+    
+            List<Map<String, Object>> data = new ArrayList<>();
+            for(int i=0;i<12;i++){
+                Map map = new HashMap();
+                map.put(Constant.KEY.KEY_DATA, i + "--");
+                data.add(map);
+            }
+            formView.setData(data);
+            formView.fillForm();
+            formView.setOnItemClickListener(new EFFormView.OnItemClickListener() {
+                @Override
+                public void onClick(BorderLinearLayout itemView) {
+                    //使表格的某一行点击时会有颜色变化
+                    int i = formView.getFormItemList().indexOf(itemView);
+                    i = i / formView.getColumnCount();
+                    Log.e("onclick, ", "  " + i);
+                    if (i >= 0) {
+                        formView.setRowBackgroundColorOnly(i
+                                , getResources().getColor(R.color.light_blue)
+                                , getResources().getColor(R.color.light_gray));
+                    }
+    
+                    formView.setRowTextColorOnly(i, Color.WHITE);
+                }
+            });
+    

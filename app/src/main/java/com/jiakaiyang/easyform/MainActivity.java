@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void test(){
         final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
-        ImageView iv = (ImageView) findViewById(R.id.iv);
 
         List<Map<String, Object>> data = new ArrayList<>();
         for(int i=0;i<12;i++){
