@@ -1,5 +1,6 @@
 1.项目简介
 >该项目是一个android端用于生成复杂表格的库。可以用来做像Excel表格那样的UI界面。
+>联系方式: kaiyangjia@163.com
 
 2.事先声明:
 >本人明白该项目的UI组件完全不符合android的设计规范，甚至都不符合移动端的设计。
@@ -16,7 +17,20 @@
 >3.在使用前请先阅读doc目录下的文档了解该项目.
 
 
-4.Useage:
+4.Import
+>1.在 Android Studio 中(Gradle):
+>>in your build.gradle(JCenter):
+
+>>compile 'com.jiakaiyang:easyform-android:0.9.3'
+
+
+>2.在 Eclipse中:
+
+
+
+>![drunk](http://vignette2.wikia.nocookie.net/cardfight/images/5/55/Go-home-youre-drunk.jpg/revision/latest?cb=20130819142928, "you are drunk")
+
+5.Useage:
 
     1.在布局文件中使用如下配置：
     

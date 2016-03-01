@@ -27,25 +27,22 @@ dependencies {
 }
 
 ext {
-    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-    bintrayName = 'easyform-android'//bintray上的项目名
+    bintrayRepo = 'maven'
+    bintrayName = 'easyform-android'
 
-    publishedGroupId = 'com.jiakaiyang'//JCenter的GroupId
-    artifact = 'easyform-android'//JCenter的ArtifactId
+    publishedGroupId = 'com.jiakaiyang'
+    artifact = 'easyform-android'
 
     siteUrl = 'http://jiakaiyang.com'
     gitUrl = 'https://github.com/kaiyangjia/EasyForm-Android'
 
-    libraryVersion = '0.9.2'//版本号
-    libraryName = 'EasyFormAndroid'//项目名字，没什么用
-    libraryDescription = 'This is a library for android to create form easily.'//项目描述，没什么用
+    libraryVersion = '0.9.3'
+    libraryName = 'EasyFormAndroid'
+    libraryDescription = 'This is a library for android to create form easily.'
 
-    //开发者信息
     developerId = 'kaiyangjia'
     developerName = 'KaiYang Jia'
     developerEmail = 'kaiyangjia@163.com'
-
-    //以上所有信息自行修改，以下不变
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
