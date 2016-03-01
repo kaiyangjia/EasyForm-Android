@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 
 import com.jiakaiyang.library.easyform.R;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 可以想Html中的div一样设置border的属性
  *
@@ -25,6 +28,11 @@ public class BorderLinearLayout extends LinearLayout {
     private int mBoderRightSize = DEFAULT_BORDER_SIZE;
     private int mBoderBottomSize = DEFAULT_BORDER_SIZE;
     private boolean isBorderEnable = true;
+    @Getter private boolean checked = false;
+    @Setter @Getter private int colorChecked;
+    @Setter @Getter private int colorUnchecked;
+    @Setter @Getter private int textColorChecked;
+    @Setter @Getter private int textColorUnchecked;
     private Paint borderPaint;
 
     public BorderLinearLayout(Context context, AttributeSet attrs) {
@@ -59,6 +67,11 @@ public class BorderLinearLayout extends LinearLayout {
     private void init() {
         borderPaint = new Paint();
         borderPaint.setColor(mBorderColor);
+
+        setColorChecked(getResources().getColor(R.color.light_blue));
+        setColorUnchecked(getResources().getColor(R.color.light_gray));
+        setTextColorChecked(getResources().getColor(R.color.default_text_color_checked));
+        setTextColorUnchecked(getResources().getColor(R.color.default_text_color_unchecked));
     }
 
     public void setBorderSize(int left, int top, int right, int bottom) {
@@ -73,6 +86,17 @@ public class BorderLinearLayout extends LinearLayout {
         mBorderColor = color;
         borderPaint.setColor(mBorderColor);
         invalidate();
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        if(checked){
+            setBackgroundColor(getColorChecked());
+            setTextColorChecked(getTextColorChecked());
+        }else{
+            setBackgroundColor(getColorUnchecked());
+            setTextColorUnchecked(getTextColorUnchecked());
+        }
     }
 
     public boolean isBorderEnable() {

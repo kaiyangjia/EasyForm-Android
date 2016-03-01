@@ -1,12 +1,10 @@
 package com.jiakaiyang.easyform;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.View;
 import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
-import com.jiakaiyang.library.easyform.view.BorderLinearLayout;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONException;
@@ -57,22 +54,9 @@ public class MainActivity extends AppCompatActivity {
         }
         formView.setData(data);
         formView.fillForm();
-        formView.setOnItemClickListener(new EFFormView.OnItemClickListener() {
-            @Override
-            public void onClick(BorderLinearLayout itemView) {
-                //使表格的某一行点击时会有颜色变化
-                int i = formView.getFormItemList().indexOf(itemView);
-                i = i / formView.getColumnCount();
-                Log.e("onclick, ", "  " + i);
-                if (i >= 0) {
-                    formView.setRowBackgroundColorOnly(i
-                            , getResources().getColor(R.color.light_blue)
-                            , getResources().getColor(R.color.light_gray));
-                }
-
-                formView.setRowTextColorOnly(i, Color.WHITE);
-            }
-        });
+        //设置每一条点击变色
+        formView.setRowClickChange();
+        //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
 
         String jsonStr = ResourcesTools.getAssets(this, "form.json");

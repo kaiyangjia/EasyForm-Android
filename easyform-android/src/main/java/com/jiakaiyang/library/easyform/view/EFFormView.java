@@ -397,6 +397,28 @@ public class EFFormView extends BorderLinearLayout{
         }
     }
 
+
+    public void setRowClickChange(){
+        setOnItemClickListener(new EFFormView.OnItemClickListener() {
+            @Override
+            public void onClick(BorderLinearLayout itemView) {
+                //使表格的某一行点击时会有颜色变化
+                int i = getFormItemList().indexOf(itemView);
+                i = i / getColumnCount();
+                Log.e("onclick, ", "  " + i);
+                if (i >= 0) {
+                    if(getFormRowList().get(i).isChecked()){
+                        unCheckRow(i);
+                    }else{
+                        checkRow(i);
+                    }
+                }
+
+                setRowTextColorOnly(i, Color.WHITE);
+            }
+        });
+    }
+
     /**
      * 检查数据的合法性
      *
@@ -488,6 +510,21 @@ public class EFFormView extends BorderLinearLayout{
                 }
             }
         }
+    }
+
+
+    public void checkRow(int rowIndex){
+        for(int i=0;i<getFormRowList().size();i++){
+            if(i == rowIndex){
+                getFormRowList().get(i).setChecked(true);
+            }else{
+                getFormRowList().get(i).setChecked(false);
+            }
+        }
+    }
+
+    public void unCheckRow(int rowIndex){
+        getFormRowList().get(rowIndex).setChecked(false);
     }
 
 

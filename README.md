@@ -66,20 +66,8 @@
             }
             formView.setData(data);
             formView.fillForm();
-            formView.setOnItemClickListener(new EFFormView.OnItemClickListener() {
-                @Override
-                public void onClick(BorderLinearLayout itemView) {
-                    //使表格的某一行点击时会有颜色变化
-                    int i = formView.getFormItemList().indexOf(itemView);
-                    i = i / formView.getColumnCount();
-                    Log.e("onclick, ", "  " + i);
-                    if (i >= 0) {
-                        formView.setRowBackgroundColorOnly(i
-                                , getResources().getColor(R.color.light_blue)
-                                , getResources().getColor(R.color.light_gray));
-                    }
-    
-                    formView.setRowTextColorOnly(i, Color.WHITE);
-                }
-            });
+            //设置每一条点击变色
+            formView.setRowClickChange();
+            //设置第一行不可点击，用于设置表头
+            formView.setRowClickable(0, false);
     
