@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         formView.setRowClickChange();
         //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
+        View view = LayoutInflater.from(this).inflate(R.layout.test, null);
+        formView.setItem(1, 2 ,view);
 
         String jsonStr = ResourcesTools.getAssets(this, "form.json");
         try {

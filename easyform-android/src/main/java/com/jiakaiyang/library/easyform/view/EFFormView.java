@@ -502,11 +502,13 @@ public class EFFormView extends BorderLinearLayout{
             if(isText){
                 TextView tv = (TextView) getFormItemList().get(i).findViewById(R.id.ef_item_text);
                 //需要改变颜色的单元格
-                if(i>=start
-                        && i<start + getColumnCount()){
-                    tv.setTextColor(color);
-                }else{// 需要设置为默认颜色的单元格
-                    tv.setTextColor(getFormItemTextColor());
+                if(tv != null){
+                    if(i>=start
+                            && i<start + getColumnCount()){
+                        tv.setTextColor(color);
+                    }else{// 需要设置为默认颜色的单元格
+                        tv.setTextColor(getFormItemTextColor());
+                    }
                 }
             }
         }
@@ -548,10 +550,12 @@ public class EFFormView extends BorderLinearLayout{
      * @param columnIndex
      * @param itemFormView
      */
-    public void setItem(int rowIndex, int columnIndex, BorderLinearLayout itemFormView) {
+    public void setItem(int rowIndex, int columnIndex, View itemFormView) {
         int index = rowIndex * getColumnCount() + columnIndex;
         if (index < formItemList.size()) {
-            formItemList.set(index, itemFormView);
+            formItemList.get(index).removeAllViewsInLayout();
+            formItemList.get(index).addView(itemFormView);
+            formItemList.get(index).invalidate();
         }
     }
 
