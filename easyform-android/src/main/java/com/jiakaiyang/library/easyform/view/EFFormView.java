@@ -274,6 +274,19 @@ public class EFFormView extends BorderLinearLayout{
             BorderLinearLayout rowView = (BorderLinearLayout) LayoutInflater.from(context).inflate(R.layout.form_row, null);
             rowView.setOrientation(LinearLayout.HORIZONTAL);
             rowView.setBorderColor(getDividerColor());
+            if(getItemHeight() > 0){
+
+            }else{
+                if(getItemLayoutVertical().equals(ITEM_LAYOUT.ALIQUOT)){
+                    LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT
+                            , 0, 0.5f);
+                    rowView.setLayoutParams(params);
+                }else{
+                    LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT
+                            , LayoutParams.WRAP_CONTENT, 0.5f);
+                    rowView.setLayoutParams(params);
+                }
+            }
 
             for (int j = 0; j < getColumnCount(); j++) {
                 BorderLinearLayout view = getItemView(i, j, ITEM_TYPE.TEXT);
@@ -293,7 +306,9 @@ public class EFFormView extends BorderLinearLayout{
                                 , LayoutParams.WRAP_CONTENT, 0.5f);
                         view.setLayoutParams(params);
                     } else if (getItemLayoutHorizontal() == ITEM_LAYOUT.WRAP) {
-
+                        LinearLayout.LayoutParams params = new LayoutParams(0
+                                , LayoutParams.WRAP_CONTENT, 0.5f);
+                        view.setLayoutParams(params);
                     }
                 }
 
@@ -512,6 +527,40 @@ public class EFFormView extends BorderLinearLayout{
                 }
             }
         }
+    }
+
+
+    /**
+     * 设置某一行的高度
+     * @param rowIndex
+     * @param height
+     */
+    public void setRowHeight(int rowIndex, int height){
+        int start = rowIndex * getColumnCount();
+        for(int i = start; i<start + getColumnCount();i++){
+
+            if(height > 0){
+                getFormItemList().get(i).getLayoutParams().height = height;
+            }
+        }
+
+        invalidate();
+    }
+
+
+    /**
+     * 设置某一列的宽度
+     * @param columnIndex
+     * @param width
+     */
+    public void setColumnWidth(int columnIndex, int width){
+        for(int i=0;i<getFormItemList().size();i++){
+            if((i % getColumnCount()) == columnIndex){
+                getFormItemList().get(i).getLayoutParams().width = width;
+            }
+        }
+
+        invalidate();
     }
 
 

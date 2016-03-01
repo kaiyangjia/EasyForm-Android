@@ -21,6 +21,7 @@ import lombok.Setter;
  *
  */
 public class BorderLinearLayout extends LinearLayout {
+    private Context context;
     private final static int DEFAULT_BORDER_SIZE = 1;
     private int mBorderColor = Color.RED;
     private int mBoderLeftSize = DEFAULT_BORDER_SIZE;
@@ -37,6 +38,7 @@ public class BorderLinearLayout extends LinearLayout {
 
     public BorderLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                 R.styleable.BorderLinearLayout, 0, 0);
         mBorderColor = a.getColor(R.styleable.BorderLinearLayout_border_color,

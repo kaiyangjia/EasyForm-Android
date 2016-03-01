@@ -55,12 +55,11 @@ public class MainActivity extends AppCompatActivity {
         }
         formView.setData(data);
         formView.fillForm();
-        //设置每一条点击变色
-        formView.setRowClickChange();
-        //设置第一行不可点击，用于设置表头
-        formView.setRowClickable(0, false);
+
         View view = LayoutInflater.from(this).inflate(R.layout.test, null);
-        formView.setItem(1, 2 ,view);
+        formView.setItem(1, 2, view);
+        formView.setRowHeight(1, getResources().getDimensionPixelSize(R.dimen.test_dimen));
+        formView.setColumnWidth(1, 30);
 
         String jsonStr = ResourcesTools.getAssets(this, "form.json");
         try {
