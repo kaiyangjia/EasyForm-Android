@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-    <form22
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <form22 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:jky="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ef_form10"
         android:layout_width="match_parent"
@@ -19,9 +18,7 @@
         jky:rowCount="2">
 
     </form22>
-
-    <form15
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <form15 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:jky="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ef_form10"
         android:layout_width="match_parent"
@@ -40,8 +37,7 @@
 
     </form15>
 
-    <form45
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <form45 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:jky="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ef_form10"
         android:layout_width="match_parent"
@@ -59,4 +55,61 @@
         jky:rowCount="4">
 
     </form45>
+
+    <form43 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="3"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="4">
+
+    </form43>
+
+    <form21 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="1"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="2">
+
+    </form21>
+
+    <form13 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="3"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="1">
+
+    </form13>
 </form>

@@ -11,8 +11,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.jiakaiyang.library.easyform.tools.Constant;
+import com.jiakaiyang.library.easyform.tools.ResourcesTools;
 import com.jiakaiyang.library.easyform.tools.XMLUtils;
 import com.jiakaiyang.library.easyform.view.EFFormView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void test(){
-        /*final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
+        final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
 
         List<Map<String, Object>> data = new ArrayList<>();
         for(int i=0;i<12;i++){
@@ -46,22 +60,42 @@ public class MainActivity extends AppCompatActivity {
         }
         formView.setData(data);
         formView.fillForm();
+        formView.setRowClickChange();
+        //设置第一行不可点击，用于设置表头
+        formView.setRowClickable(0, false);
 
-        View view = LayoutInflater.from(this).inflate(R.layout.test, null);
-        formView.setItem(1, 2, view);
-        formView.setRowHeight(1, getResources().getDimensionPixelSize(R.dimen.test_dimen));
-        formView.setColumnWidth(1, 30);*/
-
-        createTest();
+//        createTest();
+//        testJson();
     }
 
     public void createTest(){
-        AttributeSet attrs = XMLUtils.getAttrs(this, R.xml.form_config, "form45");
+        Map<String, String> map = new HashMap<>();
+        AttributeSet attrs = XMLUtils.getAttrs(this, R.xml.form_config, "form22", map);
 
         EFFormView efFormView = new EFFormView(this, attrs);
 
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.main_root);
         rootView.addView(efFormView);
+    }
+
+    public void testJson(){
+        String s = ResourcesTools.getAssets(this, "baseForm.json");
+        try {
+            JSONObject jo = new JSONObject(s);
+            String xml =  XML.toString(jo);
+            InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+
+            AttributeSet attrs = XMLUtils.getAttrs(is, "baseForm", null);
+
+            EFFormView efFormView = new EFFormView(this, attrs);
+
+            RelativeLayout rootView = (RelativeLayout) findViewById(R.id.main_root);
+            rootView.addView(efFormView);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

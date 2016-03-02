@@ -154,8 +154,6 @@ public class EFFormView extends BorderLinearLayout{
         if(attrs != null){
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EFFormView);
 
-            Log.e("测试", a.getInt(R.styleable.EFFormView_rowCount, -1) +"  ");
-
             initArgs(a);
             a.recycle();
             init();
@@ -579,7 +577,17 @@ public class EFFormView extends BorderLinearLayout{
     }
 
     public void unCheckRow(int rowIndex){
+        int start = rowIndex * getColumnCount();
+
         getFormRowList().get(rowIndex).setChecked(false);
+        for(int i=start;i<start + getColumnCount();i++){
+            TextView tv = (TextView) getFormItemList().get(i).findViewById(R.id.ef_item_text);
+            if(tv != null){
+                tv.setTextColor(getFormItemList().get(i).getTextColorUnchecked());
+                tv.invalidate();
+                getFormItemList().get(i).invalidate();
+            }
+        }
     }
 
 

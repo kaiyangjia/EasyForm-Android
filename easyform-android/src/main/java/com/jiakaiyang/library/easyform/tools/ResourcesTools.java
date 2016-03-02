@@ -38,6 +38,23 @@ public class ResourcesTools {
 
 
     /**
+     * 根据asset文件获取输入流
+     * @param context
+     * @param name
+     * @return
+     */
+    public static InputStream getAssetsStream(Context context, String name) {
+        try {
+            InputStream is = context.getAssets().open(name);
+            return is;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
      * 获取自定义的styleable-attr 的每个属性名称的数组，以list的格式返回
      *
      * @param context
