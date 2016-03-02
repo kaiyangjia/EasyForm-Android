@@ -140,7 +140,7 @@ public class EFFormView extends BorderLinearLayout{
     }
 
     public EFFormView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public EFFormView(Context context, AttributeSet attrs) {
@@ -151,11 +151,15 @@ public class EFFormView extends BorderLinearLayout{
         formRowList = new ArrayList<>();
         formTitleNames = new ArrayList<>();
 
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.EFFormView, 0, 0);
+        if(attrs != null){
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EFFormView);
 
-        initArgs(a);
-        a.recycle();
-        init();
+            Log.e("测试", a.getInt(R.styleable.EFFormView_rowCount, -1) +"  ");
+
+            initArgs(a);
+            a.recycle();
+            init();
+        }
     }
 
     public void resetArgs(){

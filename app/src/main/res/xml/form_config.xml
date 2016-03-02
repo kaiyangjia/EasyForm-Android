@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <form22
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="2"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="2">
+
+    </form22>
+
+    <form15
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="5"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="1">
+
+    </form15>
+
+    <form45
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jky="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ef_form10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        jky:columnCount="5"
+        jky:dividerColor="@android:color/darker_gray"
+        jky:dividerWidth="1dp"
+        jky:formItemTextColor="#666666"
+        jky:frameColor="@android:color/darker_gray"
+        jky:frameWidth="1dp"
+        jky:itemGravity="center"
+        jky:itemHeight="40dp"
+        jky:itemLayoutHorizontal="wrap"
+        jky:itemWidth="30dp"
+        jky:rowCount="4">
+
+    </form45>
+</form>

@@ -5,23 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
-import com.jiakaiyang.library.easyform.core.SimpleFormBuilder;
-import com.jiakaiyang.library.easyform.tools.Constant;
-import com.jiakaiyang.library.easyform.tools.ResourcesTools;
+import com.jiakaiyang.library.easyform.tools.XMLUtils;
 import com.jiakaiyang.library.easyform.view.EFFormView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void test(){
-        final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
+        /*final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
 
         List<Map<String, Object>> data = new ArrayList<>();
         for(int i=0;i<12;i++){
@@ -59,17 +50,18 @@ public class MainActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.test, null);
         formView.setItem(1, 2, view);
         formView.setRowHeight(1, getResources().getDimensionPixelSize(R.dimen.test_dimen));
-        formView.setColumnWidth(1, 30);
+        formView.setColumnWidth(1, 30);*/
 
-        String jsonStr = ResourcesTools.getAssets(this, "form.json");
-        try {
-            EFFormView efFormView = (EFFormView) findViewById(R.id.combination_form);
-            JSONObject formJson = new JSONObject(jsonStr);
-            SimpleFormBuilder simpleFormBuilder = new SimpleFormBuilder(this, formJson, efFormView);
-            simpleFormBuilder.build();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        createTest();
+    }
+
+    public void createTest(){
+        AttributeSet attrs = XMLUtils.getAttrs(this, R.xml.form_config, "form45");
+
+        EFFormView efFormView = new EFFormView(this, attrs);
+
+        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.main_root);
+        rootView.addView(efFormView);
     }
 
     @Override
