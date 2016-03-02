@@ -16,6 +16,17 @@ public class Constant {
         public static final String KEY_CONFIG = "config";
 
         public static final String KEY_FORM = "form";
+
+        public static final String KEY_ROW_HEIGHT = "rowHeight";
+
+        public static final String KEY_CHILD = "child";
+
+        public static final String KEY_HEIGHT = "height";
+
+        public static final String KEY_X = "x";
+        public static final String KEY_Y = "y";
+
+        public static final String KEY_IS_ROOT = "isRoot";
     }
 
     public class VALUE{

@@ -9,8 +9,10 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.jiakaiyang.library.easyform.core.InflateVerticalFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
 import com.jiakaiyang.library.easyform.tools.XMLUtils;
@@ -64,8 +66,25 @@ public class MainActivity extends AppCompatActivity {
         //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
 
+        testBuilder();
+
 //        createTest();
 //        testJson();
+    }
+
+    public void testBuilder(){
+        String strJson = ResourcesTools.getAssets(this, "buildForm.json");
+        try {
+            JSONObject rootConfig = new JSONObject(strJson);
+            InflateVerticalFormBuilder builder = new InflateVerticalFormBuilder(R.xml.form_config, this, rootConfig);
+            EFFormView efFormView = builder.buildForm(rootConfig);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 360);
+            efFormView.setLayoutParams(params);
+            RelativeLayout rootView = (RelativeLayout) findViewById(R.id.main_root);
+            rootView.addView(efFormView);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createTest(){
