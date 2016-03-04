@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -79,11 +80,15 @@ public class EFFormView extends BorderLinearLayout{
     private int itemLayoutTextRes;
     @Setter
     @Getter
+    private int itemLayoutEditRes;
+    @Setter
+    @Getter
     private int itemLayoutImageRes;
     @Setter
     @Getter
     private int itemLayoutCustomRes;
     @Setter @Getter private List<Map<String, Object>> formTitleNames;
+    @Setter @Getter private boolean isFormInput;
 
     @Setter
     @Getter
@@ -114,7 +119,8 @@ public class EFFormView extends BorderLinearLayout{
         TEXT(Constant.VALUE.VALUE_TEXT),
         IMAGE(Constant.VALUE.VALUE_IMAGE),
         CUSTOM(Constant.VALUE.VALUE_CUSTOM),
-        FORM(Constant.VALUE.VALUE_FORM);
+        FORM(Constant.VALUE.VALUE_FORM),
+        EDIT(Constant.VALUE.VALUE_EDIT);
         private String value;
 
         ITEM_TYPE(String value) {
@@ -220,6 +226,9 @@ public class EFFormView extends BorderLinearLayout{
 
         setFormItemTextSize(a.getDimensionPixelSize(R.styleable.EFFormView_formItemTextSize, 0));
         setFormItemTextColor(a.getColor(R.styleable.EFFormView_formItemTextColor, 0));
+
+        //表格是否为输入型表格,默认为展示型
+        setFormInput(a.getBoolean(R.styleable.EFFormView_isInput, false));
     }
 
 
@@ -256,6 +265,7 @@ public class EFFormView extends BorderLinearLayout{
     private void init() {
         //初始化一些参数
         setItemLayoutTextRes(R.layout.item_text);
+        setItemLayoutEditRes(R.layout.item_edit);
         setItemLayoutImageRes(R.layout.item_image);
         setItemLayoutCustomRes(R.layout.item_text);
         setOrientation(LinearLayout.VERTICAL);
@@ -291,7 +301,11 @@ public class EFFormView extends BorderLinearLayout{
             }
 
             for (int j = 0; j < getColumnCount(); j++) {
-                BorderLinearLayout view = getItemView(i, j, ITEM_TYPE.TEXT);
+                ITEM_TYPE type = ITEM_TYPE.TEXT;
+                if(isFormInput()){
+                    type = ITEM_TYPE.EDIT;
+                }
+                BorderLinearLayout view = getItemView(i, j, type);
                 view.setBorderColor(getDividerColor());
                 view.setOnClickListener(listener);
 
@@ -351,6 +365,8 @@ public class EFFormView extends BorderLinearLayout{
 
         if (itemType == ITEM_TYPE.IMAGE) {
             view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutImageRes(), null);
+        } else if(itemType == ITEM_TYPE.EDIT){
+            view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutEditRes(), null);
         } else if (itemType == ITEM_TYPE.CUSTOM) {
             //TODO 添加添加自定义视图的实现
             view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutCustomRes(), null);
@@ -377,6 +393,9 @@ public class EFFormView extends BorderLinearLayout{
                 Map itemData = tempData.get(j);
                 String itemValue = "";
                 ITEM_TYPE itemType = ITEM_TYPE.TEXT;
+                if(isFormInput()){
+                    itemType = ITEM_TYPE.EDIT;
+                }
 
                 if (itemData.containsKey(Constant.KEY.KEY_DATA)) {
                     if (itemData.containsKey(Constant.KEY.KEY_TYPE)) {
@@ -400,7 +419,9 @@ public class EFFormView extends BorderLinearLayout{
                     if(getFormItemTextSize() > 0){
                         tv.setTextSize(getFormItemTextSize());
                     }
-                } else if (itemType == ITEM_TYPE.IMAGE) {
+                } else if(itemType == ITEM_TYPE.EDIT){
+                    EditText et = (EditText) itemView.findViewById(R.id.ef_item_edit);
+                }else if (itemType == ITEM_TYPE.IMAGE) {
                     ImageView iv = (ImageView) itemView.findViewById(R.id.ef_item_image);
                     Picasso.with(context).load(itemValue).into(iv);
                 } else if (itemType == ITEM_TYPE.CUSTOM) {
@@ -443,6 +464,39 @@ public class EFFormView extends BorderLinearLayout{
      */
     private boolean checkData() {
         return getData().size() + getFormTitleNames().size() == getColumnCount() * getRowCount();
+    }
+
+
+    /**
+     * 获取表格内的某一行的数据列表，主要是针对表格为可填的表的时候
+     * @param rowIndex 行数，为负数则返回全部
+     * @return
+     */
+    public List<String> getDataFromForm(int rowIndex){
+        int start = 0;
+        int end = getFormItemList().size();
+
+        if(rowIndex >= 0){
+            start = rowIndex * getColumnCount();
+            end = start + getColumnCount();
+        }
+
+        List<String> result = new ArrayList<>();
+        for(int i=start;i<end;i++){
+            BorderLinearLayout item = getFormItemList().get(i);
+            String content = "";
+            if(isFormInput()){
+                EditText et = (EditText) item.findViewById(getItemLayoutEditRes());
+                content = et.getText().toString();
+            }else{
+                TextView tv = (TextView) item.findViewById(getItemLayoutTextRes());
+                content = tv.getText().toString();
+            }
+
+            result.add(content);
+        }
+
+        return result;
     }
 
 

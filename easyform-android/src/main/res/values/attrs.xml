@@ -28,6 +28,7 @@
         <attr name="formItemTextSize" format="dimension" />
         <attr name="formItemTextColor" format="color" />
         <attr name="formTitleNames" format="string" />
+        <attr name="isInput" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BorderLinearLayout">

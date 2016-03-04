@@ -37,6 +37,8 @@ public class Constant {
         public static final String VALUE_CUSTOM = "custom";
 
         public static final String VALUE_FORM = "form";
+
+        public static final String VALUE_EDIT = "edit";
     }
 
     public class ATTR_EFFORM{

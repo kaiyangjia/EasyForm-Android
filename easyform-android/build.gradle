@@ -36,7 +36,7 @@ ext {
     siteUrl = 'http://jiakaiyang.com'
     gitUrl = 'https://github.com/kaiyangjia/EasyForm-Android'
 
-    libraryVersion = '0.9.8'
+    libraryVersion = '0.9.9'
     libraryName = 'EasyFormAndroid'
     libraryDescription = 'This is a library for android to create form easily.'
 

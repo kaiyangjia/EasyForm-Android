@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
 
-        testBuilder();
+//        testBuilder();
 
 //        createTest();
 //        testJson();
