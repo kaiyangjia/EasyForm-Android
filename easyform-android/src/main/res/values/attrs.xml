@@ -29,6 +29,7 @@
         <attr name="formItemTextColor" format="color" />
         <attr name="formTitleNames" format="string" />
         <attr name="isInput" format="boolean" />
+        <attr name="inputRows" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BorderLinearLayout">

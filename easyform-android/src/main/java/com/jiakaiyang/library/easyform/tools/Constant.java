@@ -27,6 +27,10 @@ public class Constant {
         public static final String KEY_Y = "y";
 
         public static final String KEY_IS_ROOT = "isRoot";
+
+        public static final String KEY_SET_TITLE_COLOR = "setTitleColor";
+
+        public static final String KEY_TITLES = "titles";
     }
 
     public class VALUE{

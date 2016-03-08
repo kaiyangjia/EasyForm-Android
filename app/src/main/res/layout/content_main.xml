@@ -18,6 +18,7 @@
         android:id="@+id/ef_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         jky:formTitleNames="title1,title2,title3,title4"
         jky:frameWidth="1dp"
         jky:frameColor="@android:color/darker_gray"
@@ -27,7 +28,7 @@
         jky:itemHeight="40dp"
         jky:itemGravity="center"
         jky:formItemTextColor="#666666"
-        jky:isInput="true"
+        jky:inputRows="2,3"
         jky:rowCount="4"
         jky:columnCount="4" >
 

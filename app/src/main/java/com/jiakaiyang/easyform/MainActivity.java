@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.jiakaiyang.library.easyform.core.InflateVerticalFormBuilder;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
 import com.jiakaiyang.library.easyform.tools.XMLUtils;
+import com.jiakaiyang.library.easyform.view.BorderLinearLayout;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONException;
@@ -39,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);    fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -60,14 +61,15 @@ public class MainActivity extends AppCompatActivity {
             map.put(Constant.KEY.KEY_DATA, i + "--");
             data.add(map);
         }
+        formView.setDialogWhenOnClciked(true);
         formView.setData(data);
         formView.fillForm();
-        formView.setRowClickChange();
+//        formView.setRowClickChange();
         //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
-        formView.resetColumnWeight(new float[]{0.1f,0.1f, 0.1f, 0.2f});
+        formView.resetColumnWeight(new float[]{0.1f, 0.1f, 0.1f, 0.2f});
 
-//        testBuilder();
+        testBuilder();
 
 //        createTest();
 //        testJson();
@@ -81,8 +83,18 @@ public class MainActivity extends AppCompatActivity {
             EFFormView efFormView = builder.buildForm(rootConfig);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 360);
             efFormView.setLayoutParams(params);
+
+            efFormView.setOnItemClickListener(new EFFormView.OnItemClickListener() {
+                @Override
+                public void onClick(BorderLinearLayout itemView) {
+                    Log.e("测试. main", " click ");
+                }
+            });
             RelativeLayout rootView = (RelativeLayout) findViewById(R.id.main_root);
             rootView.addView(efFormView);
+
+            List<BorderLinearLayout> l = efFormView.getAllItemList();
+            int i = l.size();
         } catch (JSONException e) {
             e.printStackTrace();
         }

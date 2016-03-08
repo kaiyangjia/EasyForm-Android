@@ -3,6 +3,8 @@ package com.jiakaiyang.library.easyform.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.jiakaiyang.library.easyform.R;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
+import com.jiakaiyang.library.easyform.ui.InputDialogFragment;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -32,7 +35,7 @@ import lombok.Setter;
 /**
  * Created by kaiyangjia on 2016/2/23.
  */
-public class EFFormView extends BorderLinearLayout{
+public class EFFormView extends BorderLinearLayout implements View.OnClickListener{
     private static String TAG = "EFFormView";
     private Context context;
     @Setter
@@ -89,15 +92,33 @@ public class EFFormView extends BorderLinearLayout{
     private int itemLayoutCustomRes;
     @Setter @Getter private List<Map<String, Object>> formTitleNames;
     @Setter @Getter private boolean isFormInput;
+    @Setter @Getter private List<Integer> inputRow; // 是输入框的行数
 
     @Setter
     @Getter
     private List<Map<String, Object>> data;
+    @Setter @Getter private boolean dialogWhenOnClciked = false;
     //所有单元格的链表
     @Setter @Getter private List<BorderLinearLayout> formItemList;
     //所有行的链表
     @Setter @Getter private List<BorderLinearLayout> formRowList;
+    //表格以及子表格的所有项
+    @Setter @Getter private List<BorderLinearLayout> allItemList;
     @Setter @Getter private OnItemClickListener onItemClickListener;
+
+    @Override
+    public void onClick(View v) {
+        // 为true每个条目点击时弹出输入框
+        if(isDialogWhenOnClciked()){
+            showDialogInput();
+        }
+
+        if(getOnItemClickListener() != null){
+            BorderLinearLayout efFormView = (BorderLinearLayout) v;
+            getOnItemClickListener().onClick(efFormView);
+            Log.d(TAG, "OnItemClick : " + v.toString());
+        }
+    }
 
     public enum ITEM_LAYOUT {
         ALIQUOT(0), WRAP(1);
@@ -156,6 +177,7 @@ public class EFFormView extends BorderLinearLayout{
         formItemList = new ArrayList<>();
         formRowList = new ArrayList<>();
         formTitleNames = new ArrayList<>();
+        allItemList = new ArrayList<>();
 
         if(attrs != null){
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EFFormView);
@@ -229,15 +251,33 @@ public class EFFormView extends BorderLinearLayout{
 
         //表格是否为输入型表格,默认为展示型
         setFormInput(a.getBoolean(R.styleable.EFFormView_isInput, false));
+
+        //设置可输入的行数
+        String s = a.getString(R.styleable.EFFormView_inputRows);
+        List<Integer> rows = new ArrayList<>();
+        if(s != null
+                && !"".equals(s)
+                && s.contains(",")){
+            String[] ss = s.split(",");
+            for(int j=0;j<ss.length;j++){
+                rows.add(Integer.valueOf(ss[j]));
+            }
+        }
+        setInputRow(rows);
     }
 
 
     private void initFormTitle(TypedArray a){
         String names = a.getString(R.styleable.EFFormView_formTitleNames);
+        setFormTitles(names);
+    }
+
+    public void setFormTitles(String names){
         if(names != null){
             String[] namesArray = names.split(",");
 
             if(namesArray.length == getColumnCount()){
+                getFormTitleNames().clear();
                 for(int i=0;i<namesArray.length;i++){
                     Map map = new HashMap();
                     map.put(Constant.KEY.KEY_DATA, namesArray[i]);
@@ -270,17 +310,6 @@ public class EFFormView extends BorderLinearLayout{
         setItemLayoutCustomRes(R.layout.item_text);
         setOrientation(LinearLayout.VERTICAL);
         this.setClickable(true);
-        View.OnClickListener listener = new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Log.e("子view", "click");
-                if(getOnItemClickListener() != null){
-                    BorderLinearLayout efFormView = (BorderLinearLayout) v;
-                    getOnItemClickListener().onClick(efFormView);
-                }
-            }
-        };
 
         for (int i = 0; i < getRowCount(); i++) {
             BorderLinearLayout rowView = (BorderLinearLayout) LayoutInflater.from(context).inflate(R.layout.form_row, null);
@@ -302,12 +331,19 @@ public class EFFormView extends BorderLinearLayout{
 
             for (int j = 0; j < getColumnCount(); j++) {
                 ITEM_TYPE type = ITEM_TYPE.TEXT;
-                if(isFormInput()){
+                if(getInputRow().size() > 0){
+                    if(getInputRow().contains(i)){
+                        type = ITEM_TYPE.EDIT;
+                    }
+                }
+
+                if(isFormInput()
+                        && getInputRow().size() == 0){
                     type = ITEM_TYPE.EDIT;
                 }
                 BorderLinearLayout view = getItemView(i, j, type);
                 view.setBorderColor(getDividerColor());
-                view.setOnClickListener(listener);
+                view.setOnClickListener(this);
 
 
                 // 设置item尺寸的时候
@@ -343,6 +379,7 @@ public class EFFormView extends BorderLinearLayout{
             }
             addView(rowView);
             formRowList.add(rowView);
+            allItemList.addAll(formItemList);
         }
     }
 
@@ -393,7 +430,14 @@ public class EFFormView extends BorderLinearLayout{
                 Map itemData = tempData.get(j);
                 String itemValue = "";
                 ITEM_TYPE itemType = ITEM_TYPE.TEXT;
-                if(isFormInput()){
+                if(getInputRow().size() > 0){
+                    int row = j/getColumnCount();
+                    if(getInputRow().contains(row)){
+                        itemType = ITEM_TYPE.EDIT;
+                    }
+                }
+                if(isFormInput()
+                        && getInputRow().size() <= 0){
                     itemType = ITEM_TYPE.EDIT;
                 }
 
@@ -414,13 +458,22 @@ public class EFFormView extends BorderLinearLayout{
 
                 if (itemType == ITEM_TYPE.TEXT) {
                     TextView tv = (TextView) itemView.findViewById(R.id.ef_item_text);
-                    tv.setText(itemValue);
-                    tv.setTextColor(getFormItemTextColor());
-                    if(getFormItemTextSize() > 0){
-                        tv.setTextSize(getFormItemTextSize());
+                    if(tv != null){
+                        tv.setText(itemValue);
+                        tv.setTextColor(getFormItemTextColor());
+                        if(getFormItemTextSize() > 0){
+                            tv.setTextSize(getFormItemTextSize());
+                        }
                     }
                 } else if(itemType == ITEM_TYPE.EDIT){
                     EditText et = (EditText) itemView.findViewById(R.id.ef_item_edit);
+                    if(et != null){
+                        et.setText(itemValue);
+                        et.setTextColor(getFormItemTextColor());
+                        if(getFormItemTextSize() > 0){
+                            et.setTextSize(getFormItemTextSize());
+                        }
+                    }
                 }else if (itemType == ITEM_TYPE.IMAGE) {
                     ImageView iv = (ImageView) itemView.findViewById(R.id.ef_item_image);
                     Picasso.with(context).load(itemValue).into(iv);
@@ -740,6 +793,14 @@ public class EFFormView extends BorderLinearLayout{
 
         return row;
     }
+
+    private void showDialogInput(){
+        DialogFragment fragment = new InputDialogFragment();
+        if (context instanceof FragmentActivity){
+            fragment.show(((FragmentActivity)context).getSupportFragmentManager(), "仓房信息档案");
+        }
+    }
+
 
     public interface OnItemClickListener{
         public void onClick(BorderLinearLayout itemView);

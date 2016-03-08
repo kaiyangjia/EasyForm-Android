@@ -1,15 +1,22 @@
 package com.jiakaiyang.library.easyform.core;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.XMLUtils;
+import com.jiakaiyang.library.easyform.view.BorderLinearLayout;
 import com.jiakaiyang.library.easyform.view.EFFormView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,13 +46,31 @@ public class InflateVerticalFormBuilder {
         int rowCount = rootConfig.optInt(Constant.KEY.KEY_ROW);
         int columnCount = rootConfig.optInt(Constant.KEY.KEY_COLUMN);
 
+        String setTitleColor = rootConfig.optString(Constant.KEY.KEY_SET_TITLE_COLOR);
+        String titles = rootConfig.optString(Constant.KEY.KEY_TITLES);
+
         String s = "form" + rowCount + columnCount;
         AttributeSet attrs = XMLUtils.getAttrs(context, baseFormConfigId, s, null);
-        EFFormView efFormView = new EFFormView(context, attrs);
+        final EFFormView efFormView = new EFFormView(context, attrs);
         //正确是表示不是最外层的form
         if(rootConfig.optInt(Constant.KEY.KEY_IS_ROOT) != 1){
             efFormView.setBorderEnable(false);
         }
+        if("1".equals(setTitleColor)){
+            efFormView.setRowClickable(0, false);
+            efFormView.setRowBackgroundColorOnly(0, Color.parseColor("#f1f1f1"), Color.WHITE);
+        }
+        efFormView.setFormTitles(titles);
+
+        List<Map<String, Object>> data = new ArrayList<>();
+        for(int i=0;i<rowCount * columnCount - columnCount;i++){
+            Map map = new HashMap();
+            map.put(Constant.KEY.KEY_DATA, "");
+            data.add(map);
+        }
+        efFormView.setData(data);
+        efFormView.fillForm();
+
         JSONArray heightConfig = rootConfig.optJSONArray(Constant.KEY.KEY_ROW_HEIGHT);
 
         for(int i = 0;i<heightConfig.length();i++){
@@ -60,12 +85,19 @@ public class InflateVerticalFormBuilder {
         //递归结束条件
         if (childs.length() > 0) {
             for (int i = 0; i < childs.length(); i++) {
-                Log.e("测试", efFormView.toString() + "  " + i);
                 JSONObject childForm = childs.optJSONObject(i);
                 int x = childForm.optInt(Constant.KEY.KEY_X);
                 int y = childForm.optInt(Constant.KEY.KEY_Y);
                 JSONObject newRootFormConfig = childForm.optJSONObject(Constant.KEY.KEY_FORM);
-                efFormView.setItem(x, y, buildForm(newRootFormConfig));
+                EFFormView e = buildForm(newRootFormConfig);
+                e.setOnItemClickListener(new EFFormView.OnItemClickListener() {
+                    @Override
+                    public void onClick(BorderLinearLayout itemView) {
+                        efFormView.getOnItemClickListener().onClick(itemView);
+                    }
+                });
+                efFormView.setItem(x, y, e);
+                Log.e("测试", efFormView.toString() + "  " + i);
             }
         }
 

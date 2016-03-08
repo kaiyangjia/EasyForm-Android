@@ -2,6 +2,8 @@
   "row":2,
   "column":3,
   "isRoot":1,
+  "setTitleColor":1,
+  "titles":"温度(ºC),湿度(%),粮温情况",
   "rowHeight":[
     {
       "row":0,
@@ -29,7 +31,9 @@
             "height":4
           }
         ],
-        "child":[]
+        "child":[],
+        "setTitleColor":1,
+        "titles":"仓内,仓外"
       }
     },
     {
@@ -48,7 +52,9 @@
             "height":4
           }
         ],
-        "child":[]
+        "child":[],
+        "setTitleColor":1,
+        "titles":"仓内,仓外"
       }
     },
     {
@@ -80,7 +86,9 @@
                   "height":1
                 }
               ],
-              "child":[]
+              "child":[],
+              "setTitleColor":0,
+              "titles":"中央,东(南),东(北),西(南),西(北)"
             }
           },
           {
@@ -156,7 +164,8 @@
               "child":[]
             }
           }
-        ]
+        ],
+        "setTitleColor":1
       }
     }
   ]
