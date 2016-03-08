@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         formView.setRowClickChange();
         //设置第一行不可点击，用于设置表头
         formView.setRowClickable(0, false);
+        formView.resetColumnWeight(new float[]{0.1f,0.1f, 0.1f, 0.2f});
 
 //        testBuilder();
 

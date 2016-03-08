@@ -620,6 +620,24 @@ public class EFFormView extends BorderLinearLayout{
     }
 
 
+    public void resetColumnWeight(float[] weights){
+        if(weights == null
+                || weights.length != getColumnCount()){
+            Log.e(TAG, "resetColumnWeight :" + "the attr weights is wrong");
+            return;
+        }else {
+            for (int i=0;i<getFormItemList().size();i++){
+                float weight = weights[i % getColumnCount()];
+                LinearLayout.LayoutParams p = (LayoutParams) getFormItemList().get(i).getLayoutParams();
+                if(p != null){
+                    p.width = 0;
+                    p.weight = weight;
+                }
+            }
+        }
+    }
+
+
     public void checkRow(int rowIndex){
         for(int i=0;i<getFormRowList().size();i++){
             if(i == rowIndex){
