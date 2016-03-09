@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testBuilder(){
-        String strJson = ResourcesTools.getAssets(this, "buildForm.json");
+        String strJson = ResourcesTools.getAssets(this, "DialogPestSee.json");
         try {
             JSONObject rootConfig = new JSONObject(strJson);
             InflateVerticalFormBuilder builder = new InflateVerticalFormBuilder(R.xml.form_config, this, rootConfig);

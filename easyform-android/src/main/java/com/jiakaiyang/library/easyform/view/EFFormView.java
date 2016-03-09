@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.jiakaiyang.library.easyform.R;
 import com.jiakaiyang.library.easyform.tools.Constant;
 import com.jiakaiyang.library.easyform.tools.ResourcesTools;
-import com.jiakaiyang.library.easyform.ui.InputDialogFragment;
+import com.jiakaiyang.library.easyform.ui.FragmentFactory;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -110,7 +110,11 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     public void onClick(View v) {
         // 为true每个条目点击时弹出输入框
         if(isDialogWhenOnClciked()){
-            showDialogInput();
+            TextView textView = (TextView) v.findViewById(getItemLayoutTextRes());
+            if(textView != null
+                    && isDialogWhenOnClciked()){
+                showDialogInput(textView);
+            }
         }
 
         if(getOnItemClickListener() != null){
@@ -722,9 +726,9 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
      * @param clickable
      */
     public void setRowClickable(int rowIndex, boolean clickable){
-        getRowView(rowIndex).setClickable(false);
+        getRowView(rowIndex).setClickable(clickable);
         for(int i=rowIndex;i<(rowIndex + 1)*getColumnCount();i++){
-            getItem(rowIndex, i).setClickable(false);
+            getItem(rowIndex, i).setClickable(clickable);
         }
     }
 
@@ -794,8 +798,8 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
         return row;
     }
 
-    private void showDialogInput(){
-        DialogFragment fragment = new InputDialogFragment();
+    private void showDialogInput(TextView textView){
+        DialogFragment fragment = FragmentFactory.createInputDialog(textView);
         if (context instanceof FragmentActivity){
             fragment.show(((FragmentActivity)context).getSupportFragmentManager(), "仓房信息档案");
         }

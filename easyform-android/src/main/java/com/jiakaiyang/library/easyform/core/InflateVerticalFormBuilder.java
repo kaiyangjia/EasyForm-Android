@@ -53,7 +53,8 @@ public class InflateVerticalFormBuilder {
         AttributeSet attrs = XMLUtils.getAttrs(context, baseFormConfigId, s, null);
         final EFFormView efFormView = new EFFormView(context, attrs);
         //正确是表示不是最外层的form
-        if(rootConfig.optInt(Constant.KEY.KEY_IS_ROOT) != 1){
+        int isRoot = rootConfig.optInt(Constant.KEY.KEY_IS_ROOT);
+        if( isRoot != 1){
             efFormView.setBorderEnable(false);
         }
         if("1".equals(setTitleColor)){
