@@ -726,9 +726,14 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
      * @param clickable
      */
     public void setRowClickable(int rowIndex, boolean clickable){
-        getRowView(rowIndex).setClickable(clickable);
+        if(getRowView(rowIndex) != null){
+            getRowView(rowIndex).setClickable(clickable);
+        }
+
         for(int i=rowIndex;i<(rowIndex + 1)*getColumnCount();i++){
-            getItem(rowIndex, i).setClickable(clickable);
+            if(getItem(rowIndex, i) != null){
+                getItem(rowIndex, i).setClickable(clickable);
+            }
         }
     }
 
