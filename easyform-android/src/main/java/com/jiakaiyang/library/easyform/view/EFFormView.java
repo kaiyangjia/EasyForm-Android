@@ -334,7 +334,9 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
             }
 
             for (int j = 0; j < getColumnCount(); j++) {
-                ITEM_TYPE type = ITEM_TYPE.TEXT;
+//                ITEM_TYPE type = ITEM_TYPE.TEXT;
+                //默认为edittext的类型，但是默认的edittext 是不可输入的，需要手动改成可输入的才可以输入
+                ITEM_TYPE type = ITEM_TYPE.EDIT;
                 if(getInputRow().size() > 0){
                     if(getInputRow().contains(i)){
                         type = ITEM_TYPE.EDIT;

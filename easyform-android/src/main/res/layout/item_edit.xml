@@ -9,5 +9,8 @@
         android:id="@+id/ef_item_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试" />
+        android:background="@drawable/bg_edittext_unable"
+        android:editable="true"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp" />
 </com.jiakaiyang.library.easyform.view.BorderLinearLayout>

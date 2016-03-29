@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<Map<String, Object>> data = new ArrayList<>();
         for(int i=0;i<12;i++){
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put(Constant.KEY.KEY_DATA, i + "--");
             data.add(map);
         }
