@@ -12,7 +12,6 @@
         android:background="@drawable/bg_edittext_unable"
         android:layout_gravity="center"
         android:gravity="center"
-        android:editable="false"
         android:paddingTop="4dp"
         android:paddingBottom="4dp" />
 </com.jiakaiyang.library.easyform.view.BorderLinearLayout>

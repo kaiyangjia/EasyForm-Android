@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.jiakaiyang.library.easyform.core.InflateVerticalFormBuilder;
@@ -49,7 +50,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        test();
+//        test();
+        textEdit();
+    }
+
+    private void textEdit(){
+        EditText et = (EditText) findViewById(R.id.edit);
     }
 
     private void test(){

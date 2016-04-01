@@ -34,6 +34,11 @@
 
     </com.jiakaiyang.library.easyform.view.EFFormView>
 
+    <EditText
+        android:id="@+id/edit"
+        android:inputType="none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/iv"
         android:layout_width="wrap_content"
