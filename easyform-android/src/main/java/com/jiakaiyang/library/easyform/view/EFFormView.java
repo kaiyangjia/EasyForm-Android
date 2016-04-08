@@ -288,7 +288,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                     getFormTitleNames().add(map);
                 }
             }else{
-                Log.e(TAG, "attr formTitleNames is wrong");
+                Log.e(TAG, "attr formTitleNames is wrong, namesArray length is" + namesArray.length + " columnCount is " + getColumnCount() );
             }
         }
     }
