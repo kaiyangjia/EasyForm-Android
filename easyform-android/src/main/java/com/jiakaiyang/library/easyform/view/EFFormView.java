@@ -334,9 +334,9 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
             }
 
             for (int j = 0; j < getColumnCount(); j++) {
-                ITEM_TYPE type = ITEM_TYPE.TEXT;
-//                ITEM_TYPE type = ITEM_TYPE.EDIT;
-                if(getInputRow().size() > 0){
+//                ITEM_TYPE type = ITEM_TYPE.TEXT;
+                ITEM_TYPE type = ITEM_TYPE.EDIT;
+                /*if(getInputRow().size() > 0){
                     if(getInputRow().contains(i)){
                         type = ITEM_TYPE.EDIT;
                     }
@@ -345,7 +345,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                 if(isFormInput()
                         && getInputRow().size() == 0){
                     type = ITEM_TYPE.EDIT;
-                }
+                }*/
                 BorderLinearLayout view = getItemView(i, j, type);
                 view.setBorderColor(getDividerColor());
                 view.setOnClickListener(this);
@@ -434,13 +434,13 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
                 Map itemData = tempData.get(j);
                 String itemValue = "";
-                ITEM_TYPE itemType = ITEM_TYPE.TEXT;
-                if(getInputRow().size() > 0){
+                ITEM_TYPE itemType = ITEM_TYPE.EDIT;
+                /*if(getInputRow().size() > 0){
                     int row = j/getColumnCount();
                     if(getInputRow().contains(row)){
                         itemType = ITEM_TYPE.EDIT;
                     }
-                }
+                }*/
                 if(isFormInput()
                         && getInputRow().size() <= 0){
                     itemType = ITEM_TYPE.EDIT;
@@ -455,6 +455,8 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                             itemType = ITEM_TYPE.CUSTOM;
                         } else if (Constant.VALUE.VALUE_FORM.equals(type)) {
                             itemType = ITEM_TYPE.FORM;
+                        }else if (Constant.VALUE.VALUE_EDIT.equals(type)) {
+                            itemType = ITEM_TYPE.EDIT;
                         }
                     }
 

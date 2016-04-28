@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        test();
-        textEdit();
-    }
-
-    private void textEdit(){
-        EditText et = (EditText) findViewById(R.id.edit);
+        test();
     }
 
     private void test(){
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         formView.setRowClickable(0, false);
         formView.resetColumnWeight(new float[]{0.1f, 0.1f, 0.1f, 0.2f});
 
-        testBuilder();
+//        testBuilder();
 
 //        createTest();
 //        testJson();
