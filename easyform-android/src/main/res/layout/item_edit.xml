@@ -9,9 +9,9 @@
         android:id="@+id/ef_item_edit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_edittext_unable"
         android:layout_gravity="center"
+        android:background="@drawable/bg_edittext_unable"
         android:gravity="center"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp" />
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp" />
 </com.jiakaiyang.library.easyform.view.BorderLinearLayout>

@@ -11,11 +11,11 @@
         jky:formItemTextColor="#666666"
         jky:frameColor="@android:color/darker_gray"
         jky:frameWidth="1dp"
+        jky:inputRows="1"
         jky:itemGravity="center"
         jky:itemHeight="40dp"
         jky:itemLayoutHorizontal="wrap"
         jky:itemWidth="30dp"
-        jky:inputRows="1"
         jky:rowCount="2">
 
     </form22>
@@ -31,11 +31,11 @@
         jky:formItemTextColor="#666666"
         jky:frameColor="@android:color/darker_gray"
         jky:frameWidth="1dp"
+        jky:inputRows="1"
         jky:itemGravity="center"
         jky:itemHeight="40dp"
         jky:itemLayoutHorizontal="wrap"
         jky:itemWidth="30dp"
-        jky:inputRows="1"
         jky:rowCount="2">
 
     </form23>
@@ -70,11 +70,11 @@
         jky:formItemTextColor="#666666"
         jky:frameColor="@android:color/darker_gray"
         jky:frameWidth="1dp"
+        jky:inputRows="1,2,3"
         jky:itemGravity="center"
         jky:itemHeight="40dp"
         jky:itemLayoutHorizontal="wrap"
         jky:itemWidth="30dp"
-        jky:inputRows="1,2,3"
         jky:rowCount="4">
 
     </form45>
@@ -90,11 +90,11 @@
         jky:formItemTextColor="#666666"
         jky:frameColor="@android:color/darker_gray"
         jky:frameWidth="1dp"
+        jky:inputRows="1,2,3"
         jky:itemGravity="center"
         jky:itemHeight="40dp"
         jky:itemLayoutHorizontal="wrap"
         jky:itemWidth="30dp"
-        jky:inputRows="1,2,3"
         jky:rowCount="4">
 
     </form43>
@@ -110,11 +110,11 @@
         jky:formItemTextColor="#666666"
         jky:frameColor="@android:color/darker_gray"
         jky:frameWidth="1dp"
+        jky:inputRows="1"
         jky:itemGravity="center"
         jky:itemHeight="40dp"
         jky:itemLayoutHorizontal="wrap"
         jky:itemWidth="30dp"
-        jky:inputRows="1"
         jky:rowCount="2">
 
     </form21>

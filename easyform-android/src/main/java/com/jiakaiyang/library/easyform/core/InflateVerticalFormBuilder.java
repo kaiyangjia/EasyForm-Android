@@ -28,7 +28,9 @@ public class InflateVerticalFormBuilder {
     private Context context;
     private JSONObject formJson;
     private int baseFormConfigId;
-    @Setter @Getter private int baseRowHeight;
+    @Setter
+    @Getter
+    private int baseRowHeight;
 
     public InflateVerticalFormBuilder(int baseFormConfigId, Context context, JSONObject formJson) {
         this.baseFormConfigId = baseFormConfigId;
@@ -54,17 +56,17 @@ public class InflateVerticalFormBuilder {
         final EFFormView efFormView = new EFFormView(context, attrs);
         //正确是表示不是最外层的form
         int isRoot = rootConfig.optInt(Constant.KEY.KEY_IS_ROOT);
-        if( isRoot != 1){
+        if (isRoot != 1) {
             efFormView.setBorderEnable(false);
         }
-        if("1".equals(setTitleColor)){
+        if ("1".equals(setTitleColor)) {
             efFormView.setRowClickable(0, false);
             efFormView.setRowBackgroundColorOnly(0, Color.parseColor("#f1f1f1"), Color.WHITE);
         }
         efFormView.setFormTitles(titles);
 
         List<Map<String, Object>> data = new ArrayList<>();
-        for(int i=0;i<rowCount * columnCount - columnCount;i++){
+        for (int i = 0; i < rowCount * columnCount - columnCount; i++) {
             Map map = new HashMap();
             map.put(Constant.KEY.KEY_DATA, "");
             data.add(map);
@@ -74,7 +76,7 @@ public class InflateVerticalFormBuilder {
 
         JSONArray heightConfig = rootConfig.optJSONArray(Constant.KEY.KEY_ROW_HEIGHT);
 
-        for(int i = 0;i<heightConfig.length();i++){
+        for (int i = 0; i < heightConfig.length(); i++) {
             JSONObject jo = heightConfig.optJSONObject(i);
             int row = jo.optInt(Constant.KEY.KEY_ROW);
             int height = jo.optInt(Constant.KEY.KEY_HEIGHT);

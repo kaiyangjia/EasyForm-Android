@@ -17,7 +17,7 @@ import lombok.Setter;
 /**
  * Created by kaiyangjia on 2016/3/2.
  */
-public class BorderRelativeLayout extends RelativeLayout{
+public class BorderRelativeLayout extends RelativeLayout {
 
     private Context context;
     private final static int DEFAULT_BORDER_SIZE = 1;
@@ -30,10 +30,17 @@ public class BorderRelativeLayout extends RelativeLayout{
     @Getter
     private boolean checked = false;
     @Setter
-    @Getter private int colorChecked;
-    @Setter @Getter private int colorUnchecked;
-    @Setter @Getter private int textColorChecked;
-    @Setter @Getter private int textColorUnchecked;
+    @Getter
+    private int colorChecked;
+    @Setter
+    @Getter
+    private int colorUnchecked;
+    @Setter
+    @Getter
+    private int textColorChecked;
+    @Setter
+    @Getter
+    private int textColorUnchecked;
     private Paint borderPaint;
 
     public BorderRelativeLayout(Context context, AttributeSet attrs) {
@@ -92,9 +99,9 @@ public class BorderRelativeLayout extends RelativeLayout{
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-        if(checked){
+        if (checked) {
             setBackgroundColor(getColorChecked());
-        }else{
+        } else {
             setBackgroundColor(getColorUnchecked());
         }
     }

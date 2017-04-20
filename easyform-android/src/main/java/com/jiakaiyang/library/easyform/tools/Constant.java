@@ -4,7 +4,7 @@ package com.jiakaiyang.library.easyform.tools;
  * Created by kaiyangjia on 2016/2/24.
  */
 public class Constant {
-    public class KEY{
+    public class KEY {
         public static final String KEY_DATA = "data";
 
         public static final String KEY_TYPE = "type";
@@ -33,7 +33,7 @@ public class Constant {
         public static final String KEY_TITLES = "titles";
     }
 
-    public class VALUE{
+    public class VALUE {
         public static final String VALUE_TEXT = "text";
 
         public static final String VALUE_IMAGE = "image";
@@ -45,7 +45,7 @@ public class Constant {
         public static final String VALUE_EDIT = "edit";
     }
 
-    public class ATTR_EFFORM{
+    public class ATTR_EFFORM {
         public static final String ATTR_FRAME_COLOR = "frameColor";
         public static final String ATTR_FRAME_WIDTH = "frameWidth";
         public static final String ATTR_DIVIDER_COLOR = "dividerColor";

@@ -9,9 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.jiakaiyang.library.easyform.core.InflateVerticalFormBuilder;
@@ -38,26 +36,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);    fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setContentView(R.layout.content_main);
 
         test();
     }
 
-    private void test(){
+    private void test() {
         final EFFormView formView = (EFFormView) findViewById(R.id.ef_form);
 
         List<Map<String, Object>> data = new ArrayList<>();
-        for(int i=0;i<12;i++){
+        for (int i = 0; i < 12; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(Constant.KEY.KEY_DATA, i + "--");
             data.add(map);
@@ -76,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 //        testJson();
     }
 
-    public void testBuilder(){
+    public void testBuilder() {
         String strJson = ResourcesTools.getAssets(this, "DialogPestSee.json");
         try {
             JSONObject rootConfig = new JSONObject(strJson);
@@ -101,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void createTest(){
+    public void createTest() {
         Map<String, String> map = new HashMap<>();
         AttributeSet attrs = XMLUtils.getAttrs(this, R.xml.form_config, "form22", map);
 
@@ -111,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
         rootView.addView(efFormView);
     }
 
-    public void testJson(){
+    public void testJson() {
         String s = ResourcesTools.getAssets(this, "baseForm.json");
         try {
             JSONObject jo = new JSONObject(s);
-            String xml =  XML.toString(jo);
+            String xml = XML.toString(jo);
             InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 
             AttributeSet attrs = XMLUtils.getAttrs(is, "baseForm", null);

@@ -39,6 +39,7 @@ public class ResourcesTools {
 
     /**
      * 根据asset文件获取输入流
+     *
      * @param context
      * @param name
      * @return
@@ -84,7 +85,7 @@ public class ResourcesTools {
             //use reflection to access the resource class
             Field[] fields = Class.forName(context.getPackageName() + ".R$" + type).getFields();
 
-            for(String n : names){
+            for (String n : names) {
                 //browse all fields
                 String name = className + "_" + n;
                 for (Field f : fields) {

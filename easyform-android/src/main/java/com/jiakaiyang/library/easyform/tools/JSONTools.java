@@ -12,11 +12,11 @@ import java.util.Map;
 public class JSONTools {
 
 
-    public static JSONObject getJsonUseKeyList(List<String> keys){
+    public static JSONObject getJsonUseKeyList(List<String> keys) {
         Map map = new HashMap<>();
 
-        for(String key : keys){
-           map.put(key, "");
+        for (String key : keys) {
+            map.put(key, "");
         }
 
         JSONObject result = new JSONObject(map);

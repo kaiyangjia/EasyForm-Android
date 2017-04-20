@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 可以想Html中的div一样设置border的属性
+ * 可以像Html中的div一样设置border的属性
  *
  * @author skg
  *

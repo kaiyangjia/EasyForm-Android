@@ -3,6 +3,7 @@ package com.jiakaiyang.library.easyform.view;
 /**
  * Created by kaiyangjia on 2016/2/27.
  */
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -73,14 +74,14 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
     private void setCheckedRecursive(ViewGroup parent, boolean checked) {
         int count = parent.getChildCount();
-        for(int i = 0; i < count; i++ ) {
+        for (int i = 0; i < count; i++) {
             View v = parent.getChildAt(i);
-            if(v instanceof Checkable) {
+            if (v instanceof Checkable) {
                 ((Checkable) v).setChecked(checked);
             }
 
-            if(v instanceof ViewGroup) {
-                setCheckedRecursive((ViewGroup)v, checked);
+            if (v instanceof ViewGroup) {
+                setCheckedRecursive((ViewGroup) v, checked);
             }
         }
     }
@@ -123,7 +124,7 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
         private SavedState(Parcel in) {
             super(in);
-            checked = (Boolean)in.readValue(null);
+            checked = (Boolean) in.readValue(null);
         }
 
         @Override

@@ -35,7 +35,7 @@ import lombok.Setter;
 /**
  * Created by kaiyangjia on 2016/2/23.
  */
-public class EFFormView extends BorderLinearLayout implements View.OnClickListener{
+public class EFFormView extends BorderLinearLayout implements View.OnClickListener {
     private static String TAG = "EFFormView";
     private Context context;
     @Setter
@@ -90,34 +90,50 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     @Setter
     @Getter
     private int itemLayoutCustomRes;
-    @Setter @Getter private List<Map<String, Object>> formTitleNames;
-    @Setter @Getter private boolean isFormInput;
-    @Setter @Getter private List<Integer> inputRow; // 是输入框的行数
+    @Setter
+    @Getter
+    private List<Map<String, Object>> formTitleNames;
+    @Setter
+    @Getter
+    private boolean isFormInput;
+    @Setter
+    @Getter
+    private List<Integer> inputRow; // 是输入框的行数
 
     @Setter
     @Getter
     private List<Map<String, Object>> data;
-    @Setter @Getter private boolean dialogWhenOnClciked = false;
+    @Setter
+    @Getter
+    private boolean dialogWhenOnClciked = false;
     //所有单元格的链表
-    @Setter @Getter private List<BorderLinearLayout> formItemList;
+    @Setter
+    @Getter
+    private List<BorderLinearLayout> formItemList;
     //所有行的链表
-    @Setter @Getter private List<BorderLinearLayout> formRowList;
+    @Setter
+    @Getter
+    private List<BorderLinearLayout> formRowList;
     //表格以及子表格的所有项
-    @Setter @Getter private List<BorderLinearLayout> allItemList;
-    @Setter @Getter private OnItemClickListener onItemClickListener;
+    @Setter
+    @Getter
+    private List<BorderLinearLayout> allItemList;
+    @Setter
+    @Getter
+    private OnItemClickListener onItemClickListener;
 
     @Override
     public void onClick(View v) {
         // 为true每个条目点击时弹出输入框
-        if(isDialogWhenOnClciked()){
+        if (isDialogWhenOnClciked()) {
             TextView textView = (TextView) v.findViewById(getItemLayoutTextRes());
-            if(textView != null
-                    && isDialogWhenOnClciked()){
+            if (textView != null
+                    && isDialogWhenOnClciked()) {
                 showDialogInput(textView);
             }
         }
 
-        if(getOnItemClickListener() != null){
+        if (getOnItemClickListener() != null) {
             BorderLinearLayout efFormView = (BorderLinearLayout) v;
             getOnItemClickListener().onClick(efFormView);
             Log.d(TAG, "OnItemClick : " + v.toString());
@@ -183,7 +199,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
         formTitleNames = new ArrayList<>();
         allItemList = new ArrayList<>();
 
-        if(attrs != null){
+        if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EFFormView);
 
             initArgs(a);
@@ -192,7 +208,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
         }
     }
 
-    public void resetArgs(){
+    public void resetArgs() {
         init();
         invalidate();
     }
@@ -259,11 +275,11 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
         //设置可输入的行数
         String s = a.getString(R.styleable.EFFormView_inputRows);
         List<Integer> rows = new ArrayList<>();
-        if(s != null
+        if (s != null
                 && !"".equals(s)
-                && s.contains(",")){
+                && s.contains(",")) {
             String[] ss = s.split(",");
-            for(int j=0;j<ss.length;j++){
+            for (int j = 0; j < ss.length; j++) {
                 rows.add(Integer.valueOf(ss[j]));
             }
         }
@@ -271,24 +287,24 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     }
 
 
-    private void initFormTitle(TypedArray a){
+    private void initFormTitle(TypedArray a) {
         String names = a.getString(R.styleable.EFFormView_formTitleNames);
         setFormTitles(names);
     }
 
-    public void setFormTitles(String names){
-        if(names != null){
+    public void setFormTitles(String names) {
+        if (names != null) {
             String[] namesArray = names.split(",");
 
-            if(namesArray.length == getColumnCount()){
+            if (namesArray.length == getColumnCount()) {
                 getFormTitleNames().clear();
-                for(int i=0;i<namesArray.length;i++){
+                for (int i = 0; i < namesArray.length; i++) {
                     Map map = new HashMap();
                     map.put(Constant.KEY.KEY_DATA, namesArray[i]);
                     getFormTitleNames().add(map);
                 }
-            }else{
-                Log.e(TAG, "attr formTitleNames is wrong, namesArray length is" + namesArray.length + " columnCount is " + getColumnCount() );
+            } else {
+                Log.e(TAG, "attr formTitleNames is wrong, namesArray length is" + namesArray.length + " columnCount is " + getColumnCount());
             }
         }
     }
@@ -319,14 +335,14 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
             BorderLinearLayout rowView = (BorderLinearLayout) LayoutInflater.from(context).inflate(R.layout.form_row, null);
             rowView.setOrientation(LinearLayout.HORIZONTAL);
             rowView.setBorderColor(getDividerColor());
-            if(getItemHeight() > 0){
+            if (getItemHeight() > 0) {
 
-            }else{
-                if(getItemLayoutVertical().equals(ITEM_LAYOUT.ALIQUOT)){
+            } else {
+                if (getItemLayoutVertical().equals(ITEM_LAYOUT.ALIQUOT)) {
                     LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT
                             , 0, 0.5f);
                     rowView.setLayoutParams(params);
-                }else{
+                } else {
                     LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT
                             , LayoutParams.WRAP_CONTENT, 0.5f);
                     rowView.setLayoutParams(params);
@@ -407,7 +423,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
         if (itemType == ITEM_TYPE.IMAGE) {
             view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutImageRes(), null);
-        } else if(itemType == ITEM_TYPE.EDIT){
+        } else if (itemType == ITEM_TYPE.EDIT) {
             view = (BorderLinearLayout) LayoutInflater.from(context).inflate(getItemLayoutEditRes(), null);
         } else if (itemType == ITEM_TYPE.CUSTOM) {
             //TODO 添加添加自定义视图的实现
@@ -441,8 +457,8 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                         itemType = ITEM_TYPE.EDIT;
                     }
                 }*/
-                if(isFormInput()
-                        && getInputRow().size() <= 0){
+                if (isFormInput()
+                        && getInputRow().size() <= 0) {
                     itemType = ITEM_TYPE.EDIT;
                 }
 
@@ -455,7 +471,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                             itemType = ITEM_TYPE.CUSTOM;
                         } else if (Constant.VALUE.VALUE_FORM.equals(type)) {
                             itemType = ITEM_TYPE.FORM;
-                        }else if (Constant.VALUE.VALUE_EDIT.equals(type)) {
+                        } else if (Constant.VALUE.VALUE_EDIT.equals(type)) {
                             itemType = ITEM_TYPE.EDIT;
                         }
                     }
@@ -465,23 +481,23 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
                 if (itemType == ITEM_TYPE.TEXT) {
                     TextView tv = (TextView) itemView.findViewById(R.id.ef_item_text);
-                    if(tv != null){
+                    if (tv != null) {
                         tv.setText(itemValue);
                         tv.setTextColor(getFormItemTextColor());
-                        if(getFormItemTextSize() > 0){
+                        if (getFormItemTextSize() > 0) {
                             tv.setTextSize(getFormItemTextSize());
                         }
                     }
-                } else if(itemType == ITEM_TYPE.EDIT){
+                } else if (itemType == ITEM_TYPE.EDIT) {
                     EditText et = (EditText) itemView.findViewById(R.id.ef_item_edit);
-                    if(et != null){
+                    if (et != null) {
                         et.setText(itemValue);
                         et.setTextColor(getFormItemTextColor());
-                        if(getFormItemTextSize() > 0){
+                        if (getFormItemTextSize() > 0) {
                             et.setTextSize(getFormItemTextSize());
                         }
                     }
-                }else if (itemType == ITEM_TYPE.IMAGE) {
+                } else if (itemType == ITEM_TYPE.IMAGE) {
                     ImageView iv = (ImageView) itemView.findViewById(R.id.ef_item_image);
                     Picasso.with(context).load(itemValue).into(iv);
                 } else if (itemType == ITEM_TYPE.CUSTOM) {
@@ -490,13 +506,13 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                     //TODO
                 }
             }
-        }else{
+        } else {
             Log.e(TAG, "Check data error");
         }
     }
 
 
-    public void setRowClickChange(){
+    public void setRowClickChange() {
         setOnItemClickListener(new EFFormView.OnItemClickListener() {
             @Override
             public void onClick(BorderLinearLayout itemView) {
@@ -505,9 +521,9 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
                 i = i / getColumnCount();
                 Log.e("onclick, ", "  " + i);
                 if (i >= 0) {
-                    if(getFormRowList().get(i).isChecked()){
+                    if (getFormRowList().get(i).isChecked()) {
                         unCheckRow(i);
-                    }else{
+                    } else {
                         checkRow(i);
                     }
                 }
@@ -529,26 +545,27 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 获取表格内的某一行的数据列表，主要是针对表格为可填的表的时候
+     *
      * @param rowIndex 行数，为负数则返回全部
      * @return
      */
-    public List<String> getDataFromForm(int rowIndex){
+    public List<String> getDataFromForm(int rowIndex) {
         int start = 0;
         int end = getFormItemList().size();
 
-        if(rowIndex >= 0){
+        if (rowIndex >= 0) {
             start = rowIndex * getColumnCount();
             end = start + getColumnCount();
         }
 
         List<String> result = new ArrayList<>();
-        for(int i=start;i<end;i++){
+        for (int i = start; i < end; i++) {
             BorderLinearLayout item = getFormItemList().get(i);
             String content = "";
-            if(isFormInput()){
+            if (isFormInput()) {
                 EditText et = (EditText) item.findViewById(getItemLayoutEditRes());
                 content = et.getText().toString();
-            }else{
+            } else {
                 TextView tv = (TextView) item.findViewById(getItemLayoutTextRes());
                 content = tv.getText().toString();
             }
@@ -575,6 +592,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 设置某一行为一种颜色，其他行为另外一种颜色
+     *
      * @param rowIndex
      * @param color
      * @param otherColor
@@ -582,8 +600,8 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     public void setRowBackgroundColorOnly(int rowIndex, int color, int otherColor) {
         if (rowIndex < formRowList.size()) {
             formRowList.get(rowIndex).setBackgroundColor(color);
-            for(int i=0;i<formRowList.size();i++){
-                if(i != rowIndex){
+            for (int i = 0; i < formRowList.size(); i++) {
+                if (i != rowIndex) {
                     formRowList.get(i).setBackgroundColor(otherColor);
                 }
             }
@@ -595,7 +613,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
      * 设置某行的背景色
      *
      * @param rowIndex 行号，从0开始记
-     * @param resId   行背景
+     * @param resId    行背景
      */
     public void setRowBackgroundResource(int rowIndex, int resId) {
         if (rowIndex < formRowList.size()) {
@@ -605,7 +623,7 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
 
     public void setRowBackgroundResource(int resId) {
-        for(BorderLinearLayout view : formRowList){
+        for (BorderLinearLayout view : formRowList) {
             view.setBackgroundResource(resId);
         }
     }
@@ -613,14 +631,15 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 设置某一行中字体的颜色
+     *
      * @param rowIndex
      * @param color
      */
-    public void setRowTextColorOnly(int rowIndex, int color){
+    public void setRowTextColorOnly(int rowIndex, int color) {
         int start = rowIndex * getColumnCount();
 
         Log.e("测试", start + ",,," + getFormItemTextSize());
-        for(int i = 0; i<getFormItemList().size();i++){
+        for (int i = 0; i < getFormItemList().size(); i++) {
             List<Map> tempData = new ArrayList<>();
             tempData.addAll(getFormTitleNames());
             tempData.addAll(getData());
@@ -630,14 +649,14 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
             boolean isText = !map.containsKey(Constant.KEY.KEY_TYPE)
                     || (map.containsKey(Constant.KEY.KEY_TYPE)
                     && map.get(Constant.KEY.KEY_TYPE).equals(Constant.VALUE.VALUE_TEXT));
-            if(isText){
+            if (isText) {
                 TextView tv = (TextView) getFormItemList().get(i).findViewById(R.id.ef_item_text);
                 //需要改变颜色的单元格
-                if(tv != null){
-                    if(i>=start
-                            && i<start + getColumnCount()){
+                if (tv != null) {
+                    if (i >= start
+                            && i < start + getColumnCount()) {
                         tv.setTextColor(color);
-                    }else{// 需要设置为默认颜色的单元格
+                    } else {// 需要设置为默认颜色的单元格
                         tv.setTextColor(getFormItemTextColor());
                     }
                 }
@@ -648,14 +667,15 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 设置某一行的高度
+     *
      * @param rowIndex
      * @param height
      */
-    public void setRowHeight(int rowIndex, int height){
+    public void setRowHeight(int rowIndex, int height) {
         int start = rowIndex * getColumnCount();
-        for(int i = start; i<start + getColumnCount();i++){
+        for (int i = start; i < start + getColumnCount(); i++) {
 
-            if(height > 0){
+            if (height > 0) {
                 getFormItemList().get(i).getLayoutParams().height = height;
             }
         }
@@ -666,12 +686,13 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 设置某一列的宽度
+     *
      * @param columnIndex
      * @param width
      */
-    public void setColumnWidth(int columnIndex, int width){
-        for(int i=0;i<getFormItemList().size();i++){
-            if((i % getColumnCount()) == columnIndex){
+    public void setColumnWidth(int columnIndex, int width) {
+        for (int i = 0; i < getFormItemList().size(); i++) {
+            if ((i % getColumnCount()) == columnIndex) {
                 getFormItemList().get(i).getLayoutParams().width = width;
             }
         }
@@ -680,16 +701,16 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     }
 
 
-    public void resetColumnWeight(float[] weights){
-        if(weights == null
-                || weights.length != getColumnCount()){
+    public void resetColumnWeight(float[] weights) {
+        if (weights == null
+                || weights.length != getColumnCount()) {
             Log.e(TAG, "resetColumnWeight :" + "the attr weights is wrong");
             return;
-        }else {
-            for (int i=0;i<getFormItemList().size();i++){
+        } else {
+            for (int i = 0; i < getFormItemList().size(); i++) {
                 float weight = weights[i % getColumnCount()];
                 LinearLayout.LayoutParams p = (LayoutParams) getFormItemList().get(i).getLayoutParams();
-                if(p != null){
+                if (p != null) {
                     p.width = 0;
                     p.weight = weight;
                 }
@@ -698,23 +719,23 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
     }
 
 
-    public void checkRow(int rowIndex){
-        for(int i=0;i<getFormRowList().size();i++){
-            if(i == rowIndex){
+    public void checkRow(int rowIndex) {
+        for (int i = 0; i < getFormRowList().size(); i++) {
+            if (i == rowIndex) {
                 getFormRowList().get(i).setChecked(true);
-            }else{
+            } else {
                 getFormRowList().get(i).setChecked(false);
             }
         }
     }
 
-    public void unCheckRow(int rowIndex){
+    public void unCheckRow(int rowIndex) {
         int start = rowIndex * getColumnCount();
 
         getFormRowList().get(rowIndex).setChecked(false);
-        for(int i=start;i<start + getColumnCount();i++){
+        for (int i = start; i < start + getColumnCount(); i++) {
             TextView tv = (TextView) getFormItemList().get(i).findViewById(R.id.ef_item_text);
-            if(tv != null){
+            if (tv != null) {
                 tv.setTextColor(getFormItemList().get(i).getTextColorUnchecked());
                 tv.invalidate();
                 getFormItemList().get(i).invalidate();
@@ -725,16 +746,17 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     /**
      * 设置某一行是否可以点击
+     *
      * @param rowIndex
      * @param clickable
      */
-    public void setRowClickable(int rowIndex, boolean clickable){
-        if(getRowView(rowIndex) != null){
+    public void setRowClickable(int rowIndex, boolean clickable) {
+        if (getRowView(rowIndex) != null) {
             getRowView(rowIndex).setClickable(clickable);
         }
 
-        for(int i=rowIndex;i<(rowIndex + 1)*getColumnCount();i++){
-            if(getItem(rowIndex, i) != null){
+        for (int i = rowIndex; i < (rowIndex + 1) * getColumnCount(); i++) {
+            if (getItem(rowIndex, i) != null) {
                 getItem(rowIndex, i).setClickable(clickable);
             }
         }
@@ -806,15 +828,15 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
         return row;
     }
 
-    private void showDialogInput(TextView textView){
+    private void showDialogInput(TextView textView) {
         DialogFragment fragment = FragmentFactory.createInputDialog(textView);
-        if (context instanceof FragmentActivity){
-            fragment.show(((FragmentActivity)context).getSupportFragmentManager(), "仓房信息档案");
+        if (context instanceof FragmentActivity) {
+            fragment.show(((FragmentActivity) context).getSupportFragmentManager(), "仓房信息档案");
         }
     }
 
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         public void onClick(BorderLinearLayout itemView);
     }
 }
