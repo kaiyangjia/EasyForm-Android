@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 2
-        versionName "1.1"
+        targetSdkVersion 25
+        versionCode 3
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     provided "org.projectlombok:lombok:1.14.4"
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
@@ -37,7 +37,7 @@ ext {
     siteUrl = 'http://jiakaiyang.com'
     gitUrl = 'https://github.com/kaiyangjia/EasyForm-Android'
 
-    libraryVersion = '1.1'
+    libraryVersion = '2.0'
     libraryName = 'EasyFormAndroid'
     libraryDescription = 'This is a library for android to create form easily.'
 
@@ -49,5 +49,5 @@ ext {
     licenseUrl = 'https://www.gnu.org/licenses/gpl-3.0.txt'
     allLicenses = ["GPL-3.0"]
 }
-apply from:'https://raw.githubusercontent.com/Jude95/JCenter/master/install.gradle'
-apply from:'https://raw.githubusercontent.com/Jude95/JCenter/master/bintray.gradle'
+apply from:'install.gradle'
+apply from:'bintray.gradle'
