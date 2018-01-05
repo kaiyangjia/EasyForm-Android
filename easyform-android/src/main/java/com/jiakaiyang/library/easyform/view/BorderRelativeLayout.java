@@ -11,8 +11,6 @@ import android.widget.RelativeLayout;
 
 import com.jiakaiyang.library.easyform.R;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by kaiyangjia on 2016/3/2.
@@ -27,19 +25,10 @@ public class BorderRelativeLayout extends RelativeLayout {
     private int mBoderRightSize = DEFAULT_BORDER_SIZE;
     private int mBoderBottomSize = DEFAULT_BORDER_SIZE;
     private boolean isBorderEnable = true;
-    @Getter
     private boolean checked = false;
-    @Setter
-    @Getter
     private int colorChecked;
-    @Setter
-    @Getter
     private int colorUnchecked;
-    @Setter
-    @Getter
     private int textColorChecked;
-    @Setter
-    @Getter
     private int textColorUnchecked;
     private Paint borderPaint;
 
@@ -149,5 +138,97 @@ public class BorderRelativeLayout extends RelativeLayout {
             tempRect.set(0, vh - mBoderBottomSize, vw, vh);
             canvas.drawRect(tempRect, borderPaint);
         }
+    }
+
+    public int getmBorderColor() {
+        return mBorderColor;
+    }
+
+    public void setmBorderColor(int mBorderColor) {
+        this.mBorderColor = mBorderColor;
+    }
+
+    public int getmBoderLeftSize() {
+        return mBoderLeftSize;
+    }
+
+    public void setmBoderLeftSize(int mBoderLeftSize) {
+        this.mBoderLeftSize = mBoderLeftSize;
+    }
+
+    public int getmBoderTopSize() {
+        return mBoderTopSize;
+    }
+
+    public void setmBoderTopSize(int mBoderTopSize) {
+        this.mBoderTopSize = mBoderTopSize;
+    }
+
+    public int getmBoderRightSize() {
+        return mBoderRightSize;
+    }
+
+    public void setmBoderRightSize(int mBoderRightSize) {
+        this.mBoderRightSize = mBoderRightSize;
+    }
+
+    public int getmBoderBottomSize() {
+        return mBoderBottomSize;
+    }
+
+    public void setmBoderBottomSize(int mBoderBottomSize) {
+        this.mBoderBottomSize = mBoderBottomSize;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public int getColorChecked() {
+        return colorChecked;
+    }
+
+    public void setColorChecked(int colorChecked) {
+        this.colorChecked = colorChecked;
+    }
+
+    public int getColorUnchecked() {
+        return colorUnchecked;
+    }
+
+    public void setColorUnchecked(int colorUnchecked) {
+        this.colorUnchecked = colorUnchecked;
+    }
+
+    public int getTextColorChecked() {
+        return textColorChecked;
+    }
+
+    public void setTextColorChecked(int textColorChecked) {
+        this.textColorChecked = textColorChecked;
+    }
+
+    public int getTextColorUnchecked() {
+        return textColorUnchecked;
+    }
+
+    public void setTextColorUnchecked(int textColorUnchecked) {
+        this.textColorUnchecked = textColorUnchecked;
+    }
+
+    public Paint getBorderPaint() {
+        return borderPaint;
+    }
+
+    public void setBorderPaint(Paint borderPaint) {
+        this.borderPaint = borderPaint;
+    }
+
+    public Rect getTempRect() {
+        return tempRect;
+    }
+
+    public void setTempRect(Rect tempRect) {
+        this.tempRect = tempRect;
     }
 }

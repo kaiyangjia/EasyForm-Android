@@ -17,13 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    provided "org.projectlombok:lombok:1.14.4"
+//    provided "org.projectlombok:lombok:1.14.4"
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
 

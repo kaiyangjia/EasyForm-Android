@@ -10,14 +10,12 @@ import android.widget.TextView;
 
 import com.jiakaiyang.library.easyform.R;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by kaiyangjia on 2016/3/8.
  */
-public class InputDialogFragment extends DialogFragment implements View.OnClickListener{
-    @Setter @Getter private TextView clickedTextView;
+public class InputDialogFragment extends DialogFragment implements View.OnClickListener {
+    private TextView clickedTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +34,16 @@ public class InputDialogFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             // TODO
         }
+    }
+
+    public TextView getClickedTextView() {
+        return clickedTextView;
+    }
+
+    public void setClickedTextView(TextView clickedTextView) {
+        this.clickedTextView = clickedTextView;
     }
 }

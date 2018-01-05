@@ -28,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
-
 
 /**
  * Created by kaiyangjia on 2016/2/23.
@@ -38,88 +35,35 @@ import lombok.Setter;
 public class EFFormView extends BorderLinearLayout implements View.OnClickListener {
     private static String TAG = "EFFormView";
     private Context context;
-    @Setter
-    @Getter
+
     private int frameColor; //边框颜色
-    @Setter
-    @Getter
     private int frameWidth; //边框宽度
-    @Setter
-    @Getter
     private int dividerColor; //分隔线颜色
-    @Setter
-    @Getter
     private int dividerWidth;  //分隔线宽度
-    @Setter
-    @Getter
     private int rowCount; //行数量
-    @Setter
-    @Getter
     private int columnCount; //列数量
-    @Setter
-    @Getter
     private ITEM_LAYOUT itemLayoutHorizontal; //水平方向的排列方式
-    @Setter
-    @Getter
     private ITEM_LAYOUT itemLayoutVertical;  //竖直方向的排列方式
-    @Setter
-    @Getter
     private int itemWidth;
-    @Setter
-    @Getter
     private int itemHeight;
-    @Setter
-    @Getter
     private ITEM_GRAVITY itemGravity;
-    @Setter
-    @Getter
     private int formItemTextSize;
-    @Setter
-    @Getter
     private int formItemTextColor;
-
-    @Setter
-    @Getter
     private int itemLayoutTextRes;
-    @Setter
-    @Getter
     private int itemLayoutEditRes;
-    @Setter
-    @Getter
     private int itemLayoutImageRes;
-    @Setter
-    @Getter
     private int itemLayoutCustomRes;
-    @Setter
-    @Getter
     private List<Map<String, Object>> formTitleNames;
-    @Setter
-    @Getter
     private boolean isFormInput;
-    @Setter
-    @Getter
     private List<Integer> inputRow; // 是输入框的行数
-
-    @Setter
-    @Getter
     private List<Map<String, Object>> data;
-    @Setter
-    @Getter
     private boolean dialogWhenOnClciked = false;
     //所有单元格的链表
-    @Setter
-    @Getter
     private List<BorderLinearLayout> formItemList;
     //所有行的链表
-    @Setter
-    @Getter
     private List<BorderLinearLayout> formRowList;
     //表格以及子表格的所有项
-    @Setter
-    @Getter
     private List<BorderLinearLayout> allItemList;
-    @Setter
-    @Getter
     private OnItemClickListener onItemClickListener;
 
     @Override
@@ -838,5 +782,214 @@ public class EFFormView extends BorderLinearLayout implements View.OnClickListen
 
     public interface OnItemClickListener {
         public void onClick(BorderLinearLayout itemView);
+    }
+
+
+    public int getFrameColor() {
+        return frameColor;
+    }
+
+    public void setFrameColor(int frameColor) {
+        this.frameColor = frameColor;
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(int frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public int getDividerColor() {
+        return dividerColor;
+    }
+
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
+    }
+
+    public int getDividerWidth() {
+        return dividerWidth;
+    }
+
+    public void setDividerWidth(int dividerWidth) {
+        this.dividerWidth = dividerWidth;
+    }
+
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
+    }
+
+    public ITEM_LAYOUT getItemLayoutHorizontal() {
+        return itemLayoutHorizontal;
+    }
+
+    public void setItemLayoutHorizontal(ITEM_LAYOUT itemLayoutHorizontal) {
+        this.itemLayoutHorizontal = itemLayoutHorizontal;
+    }
+
+    public ITEM_LAYOUT getItemLayoutVertical() {
+        return itemLayoutVertical;
+    }
+
+    public void setItemLayoutVertical(ITEM_LAYOUT itemLayoutVertical) {
+        this.itemLayoutVertical = itemLayoutVertical;
+    }
+
+    public int getItemWidth() {
+        return itemWidth;
+    }
+
+    public void setItemWidth(int itemWidth) {
+        this.itemWidth = itemWidth;
+    }
+
+    public int getItemHeight() {
+        return itemHeight;
+    }
+
+    public void setItemHeight(int itemHeight) {
+        this.itemHeight = itemHeight;
+    }
+
+    public ITEM_GRAVITY getItemGravity() {
+        return itemGravity;
+    }
+
+    public void setItemGravity(ITEM_GRAVITY itemGravity) {
+        this.itemGravity = itemGravity;
+    }
+
+    public int getFormItemTextSize() {
+        return formItemTextSize;
+    }
+
+    public void setFormItemTextSize(int formItemTextSize) {
+        this.formItemTextSize = formItemTextSize;
+    }
+
+    public int getFormItemTextColor() {
+        return formItemTextColor;
+    }
+
+    public void setFormItemTextColor(int formItemTextColor) {
+        this.formItemTextColor = formItemTextColor;
+    }
+
+    public int getItemLayoutTextRes() {
+        return itemLayoutTextRes;
+    }
+
+    public void setItemLayoutTextRes(int itemLayoutTextRes) {
+        this.itemLayoutTextRes = itemLayoutTextRes;
+    }
+
+    public int getItemLayoutEditRes() {
+        return itemLayoutEditRes;
+    }
+
+    public void setItemLayoutEditRes(int itemLayoutEditRes) {
+        this.itemLayoutEditRes = itemLayoutEditRes;
+    }
+
+    public int getItemLayoutImageRes() {
+        return itemLayoutImageRes;
+    }
+
+    public void setItemLayoutImageRes(int itemLayoutImageRes) {
+        this.itemLayoutImageRes = itemLayoutImageRes;
+    }
+
+    public int getItemLayoutCustomRes() {
+        return itemLayoutCustomRes;
+    }
+
+    public void setItemLayoutCustomRes(int itemLayoutCustomRes) {
+        this.itemLayoutCustomRes = itemLayoutCustomRes;
+    }
+
+    public List<Map<String, Object>> getFormTitleNames() {
+        return formTitleNames;
+    }
+
+    public void setFormTitleNames(List<Map<String, Object>> formTitleNames) {
+        this.formTitleNames = formTitleNames;
+    }
+
+    public boolean isFormInput() {
+        return isFormInput;
+    }
+
+    public void setFormInput(boolean formInput) {
+        isFormInput = formInput;
+    }
+
+    public List<Integer> getInputRow() {
+        return inputRow;
+    }
+
+    public void setInputRow(List<Integer> inputRow) {
+        this.inputRow = inputRow;
+    }
+
+    public List<Map<String, Object>> getData() {
+        return data;
+    }
+
+    public void setData(List<Map<String, Object>> data) {
+        this.data = data;
+    }
+
+    public boolean isDialogWhenOnClciked() {
+        return dialogWhenOnClciked;
+    }
+
+    public void setDialogWhenOnClciked(boolean dialogWhenOnClciked) {
+        this.dialogWhenOnClciked = dialogWhenOnClciked;
+    }
+
+    public List<BorderLinearLayout> getFormItemList() {
+        return formItemList;
+    }
+
+    public void setFormItemList(List<BorderLinearLayout> formItemList) {
+        this.formItemList = formItemList;
+    }
+
+    public List<BorderLinearLayout> getFormRowList() {
+        return formRowList;
+    }
+
+    public void setFormRowList(List<BorderLinearLayout> formRowList) {
+        this.formRowList = formRowList;
+    }
+
+    public List<BorderLinearLayout> getAllItemList() {
+        return allItemList;
+    }
+
+    public void setAllItemList(List<BorderLinearLayout> allItemList) {
+        this.allItemList = allItemList;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

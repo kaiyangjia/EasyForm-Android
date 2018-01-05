@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by kaiyangjia on 2016/3/2.
@@ -28,8 +26,6 @@ public class InflateVerticalFormBuilder {
     private Context context;
     private JSONObject formJson;
     private int baseFormConfigId;
-    @Setter
-    @Getter
     private int baseRowHeight;
 
     public InflateVerticalFormBuilder(int baseFormConfigId, Context context, JSONObject formJson) {
@@ -105,5 +101,13 @@ public class InflateVerticalFormBuilder {
         }
 
         return efFormView;
+    }
+
+    public int getBaseRowHeight() {
+        return baseRowHeight;
+    }
+
+    public void setBaseRowHeight(int baseRowHeight) {
+        this.baseRowHeight = baseRowHeight;
     }
 }

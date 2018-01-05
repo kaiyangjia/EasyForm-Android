@@ -7,7 +7,7 @@ import android.widget.TextView;
  */
 public class FragmentFactory {
 
-    public static InputDialogFragment createInputDialog(TextView textView){
+    public static InputDialogFragment createInputDialog(TextView textView) {
         InputDialogFragment inputDialogFragment = new InputDialogFragment();
         inputDialogFragment.setClickedTextView(textView);
 
