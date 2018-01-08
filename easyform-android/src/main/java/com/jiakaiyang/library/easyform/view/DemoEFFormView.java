@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.jiakaiyang.library.easyform.core.EFNode;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -91,7 +92,7 @@ public class DemoEFFormView extends ViewGroup {
     private float[] drawDividerLines;
     private Paint dividerPaint;
     private boolean drawn = false;
-    private Set<Line> drawnDividers;
+    private Set<Line> drawnDividers = new HashSet<>();
     /* END------ this fields for the class ------*/
 
 
@@ -150,11 +151,11 @@ public class DemoEFFormView extends ViewGroup {
 
     /* ------START private methods ------*/
 
-    // TODO: 2018/1/6 解决中间的线有重复绘制的问题
+    // TODO: 2018/1/8 把 drawLines 的形式替换成drawRect
     private void drawDividers(Canvas canvas) {
         Log.i(TAG, "drawDividers: ");
-        int height = getMeasuredHeight();
-        int width = getMeasuredWidth();
+        int height = getMeasuredHeight() - 70;
+        int width = getMeasuredWidth() - 70;
 
         int cellHeight = height / rowCount;
         int cellWidth = width / columnCount;
@@ -187,7 +188,12 @@ public class DemoEFFormView extends ViewGroup {
                             , EFNode.DIRECTION_RIGHT
                             , cellWidth, cellHeight);
 
-                    canvas.drawLines(rightLine, dividerPaint);
+                    Line line = new Line(rightLine);
+
+                    if (drawnDividers.add(line)) {
+                        Log.d(TAG, "drawDividers: right");
+                        canvas.drawLines(rightLine, dividerPaint);
+                    }
                 }
 
                 if (node.isShouldDrawDown()) {
@@ -195,7 +201,12 @@ public class DemoEFFormView extends ViewGroup {
                             , EFNode.DIRECTION_DOWM
                             , cellWidth, cellHeight);
 
-                    canvas.drawLines(downLine, dividerPaint);
+                    Line line = new Line(downLine);
+
+                    if (drawnDividers.add(line)) {
+                        Log.d(TAG, "drawDividers: down");
+                        canvas.drawLines(downLine, dividerPaint);
+                    }
                 }
             }
         }
@@ -242,12 +253,24 @@ public class DemoEFFormView extends ViewGroup {
      * 表格中的一条线
      */
     class Line {
-        private int startX;
-        private int startY;
+        private float startX;
+        private float startY;
 
-        public Line(int startX, int startY) {
+        private float endX;
+        private float endY;
+
+        public Line(float[] points) {
+            this.startX = points[0];
+            this.startY = points[1];
+            this.endX = points[2];
+            this.endY = points[3];
+        }
+
+        public Line(float startX, float startY, float endX, float endY) {
             this.startX = startX;
             this.startY = startY;
+            this.endX = endX;
+            this.endY = endY;
         }
 
         @Override
@@ -257,31 +280,59 @@ public class DemoEFFormView extends ViewGroup {
             }
 
             Line target = (Line) obj;
-            return (target.getStartX() == this.getStartX())
-                    && (target.getStartY() == this.getStartY());
+
+            boolean sameDirection = (target.getStartX() == this.getStartX())
+                    && (target.getStartY() == this.getStartY())
+                    && (target.getEndX() == this.getEndX())
+                    && (target.getEndY() == this.getEndY());
+
+            boolean notSameDirection = (target.getStartX() == this.getEndX())
+                    && (target.getStartY() == this.getEndY())
+                    && (target.getEndX() == this.getStartX())
+                    && (target.getEndY() == this.getStartY());
+
+            return sameDirection || notSameDirection;
         }
 
 
         @Override
         public int hashCode() {
-            return (31 * startX + 43)
-                    + (31 * startY + 3);
+            return (int) ((31 * startX + 43)
+                    + (31 * startY + 3)
+                    + (31 * endX + 43)
+                    + (31 * endY + 3));
         }
 
-        public int getStartX() {
+        public float getStartX() {
             return startX;
         }
 
-        public void setStartX(int startX) {
+        public void setStartX(float startX) {
             this.startX = startX;
         }
 
-        public int getStartY() {
+        public float getStartY() {
             return startY;
         }
 
-        public void setStartY(int startY) {
+        public void setStartY(float startY) {
             this.startY = startY;
+        }
+
+        public float getEndX() {
+            return endX;
+        }
+
+        public void setEndX(float endX) {
+            this.endX = endX;
+        }
+
+        public float getEndY() {
+            return endY;
+        }
+
+        public void setEndY(float endY) {
+            this.endY = endY;
         }
     }
 }

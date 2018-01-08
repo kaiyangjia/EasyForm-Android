@@ -6,6 +6,7 @@
 
     <!-- this is preview for the DemoEFFormView-->
     <com.jiakaiyang.library.easyform.view.DemoEFFormView
+        android:layout_margin="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
