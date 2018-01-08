@@ -1,4 +1,4 @@
-package com.jiakaiyang.library.easyform.view;
+package com.jiakaiyang.library.easyform.core.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,85 +12,49 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.jiakaiyang.library.easyform.core.EFFormController;
 import com.jiakaiyang.library.easyform.core.EFNode;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by jia on 2018/1/5.
  * This is a dev EFForm for v2.0. This will be replace the old EFFormView when it be done.
+ * <p>
+ * This class should not be use. you should use the child classes.
  */
 
-public class DemoEFFormView extends ViewGroup {
+public abstract class EFFormView extends ViewGroup {
     private static final String TAG = "DemoEFFormView";
 
 
     /**
      * brow form the old one.
-     *
-     * @Setter
-     * @Getter private int frameColor; //边框颜色
-     * @Setter
-     * @Getter private int frameWidth; //边框宽度
-     * @Setter
-     * @Getter private int dividerColor; //分隔线颜色
-     * @Setter
-     * @Getter private int dividerWidth;  //分隔线宽度
-     * @Setter
-     * @Getter private int rowCount; //行数量
-     * @Setter
-     * @Getter private int columnCount; //列数量
-     * @Setter
-     * @Getter private ITEM_LAYOUT itemLayoutHorizontal; //水平方向的排列方式
-     * @Setter
-     * @Getter private ITEM_LAYOUT itemLayoutVertical;  //竖直方向的排列方式
-     * @Setter
-     * @Getter private int itemWidth;
-     * @Setter
-     * @Getter private int itemHeight;
-     * @Setter
-     * @Getter private ITEM_GRAVITY itemGravity;
-     * @Setter
-     * @Getter private int formItemTextSize;
-     * @Setter
-     * @Getter private int formItemTextColor;
-     * @Setter
-     * @Getter private int itemLayoutTextRes;
-     * @Setter
-     * @Getter private int itemLayoutEditRes;
-     * @Setter
-     * @Getter private int itemLayoutImageRes;
-     * @Setter
-     * @Getter private int itemLayoutCustomRes;
-     * @Setter
-     * @Getter private List<Map<String, Object>> formTitleNames;
-     * @Setter
-     * @Getter private boolean isFormInput;
-     * @Setter
-     * @Getter private List<Integer> inputRow; // 是输入框的行数
-     * @Setter
-     * @Getter private List<Map<String, Object>> data;
-     * @Setter
-     * @Getter private boolean dialogWhenOnClciked = false;
+     * <p>
+     * private ITEM_GRAVITY itemGravity;
+     * <p>
+     * private int formItemTextSize;
+     * private int formItemTextColor;
+     * private int itemLayoutTextRes;
+     * private int itemLayoutEditRes;
+     * private int itemLayoutImageRes;
+     * private int itemLayoutCustomRes;
+     * private List<Map<String, Object>> formTitleNames;
+     * private boolean isFormInput;
+     * private List<Integer> inputRow; // 是输入框的行数
+     * private List<Map<String, Object>> data;
+     * private boolean dialogWhenOnClciked = false;
      * //所有单元格的链表
-     * @Setter
-     * @Getter private List<BorderLinearLayout> formItemList;
+     * private List<BorderLinearLayout> formItemList;
      * //所有行的链表
-     * @Setter
-     * @Getter private List<BorderLinearLayout> formRowList;
+     * private List<BorderLinearLayout> formRowList;
      * //表格以及子表格的所有项
-     * @Setter
-     * @Getter private List<BorderLinearLayout> allItemList;
-     * @Setter
-     * @Getter private OnItemClickListener onItemClickListener;
+     * private List<BorderLinearLayout> allItemList;
+     * private OnItemClickListener onItemClickListener;
      */
 
     /* START------ this fields for the class ------*/
     // nodes for this form.
     private EFNode[][] mNodes;
-    //
-    private float[] drawDividerLines;
     private Paint dividerPaint;
     private Paint framePaint;
     private boolean drawn = false;
@@ -98,8 +62,15 @@ public class DemoEFFormView extends ViewGroup {
 
 
     /* ------<<< the config from xml file for the class ------*/
+    // 行数，列数
     private int rowCount = 2;
     private int columnCount = 3;
+
+    private int frameColor; //边框颜色
+    private int frameWidth; //边框宽度
+
+    // item content gravity. value from Gravity
+    private int itemGravity;
 
     @ColorInt
     private int dividerColor = Color.RED;
@@ -108,21 +79,21 @@ public class DemoEFFormView extends ViewGroup {
     /* ------ the config from xml file for the class >>>------*/
 
 
-    public DemoEFFormView(Context context) {
+    public EFFormView(Context context) {
         this(context, null, 0);
     }
 
-    public DemoEFFormView(Context context, AttributeSet attrs) {
+    public EFFormView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DemoEFFormView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EFFormView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public DemoEFFormView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public EFFormView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -136,6 +107,10 @@ public class DemoEFFormView extends ViewGroup {
         initParams();
 
         resetPadding();
+    }
+
+    protected void onInit() {
+
     }
 
     /**
@@ -374,91 +349,19 @@ public class DemoEFFormView extends ViewGroup {
 
     /* ------END private methods ------*/
 
+    public int getRowCount() {
+        return rowCount;
+    }
 
-    /**
-     * 表格中的一条线
-     */
-    class Line {
-        private float startX;
-        private float startY;
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
 
-        private float endX;
-        private float endY;
+    public int getColumnCount() {
+        return columnCount;
+    }
 
-        public Line(float[] points) {
-            this.startX = points[0];
-            this.startY = points[1];
-            this.endX = points[2];
-            this.endY = points[3];
-        }
-
-        public Line(float startX, float startY, float endX, float endY) {
-            this.startX = startX;
-            this.startY = startY;
-            this.endX = endX;
-            this.endY = endY;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if ((obj instanceof Line)) {
-                return false;
-            }
-
-            Line target = (Line) obj;
-
-            boolean sameDirection = (target.getStartX() == this.getStartX())
-                    && (target.getStartY() == this.getStartY())
-                    && (target.getEndX() == this.getEndX())
-                    && (target.getEndY() == this.getEndY());
-
-            boolean notSameDirection = (target.getStartX() == this.getEndX())
-                    && (target.getStartY() == this.getEndY())
-                    && (target.getEndX() == this.getStartX())
-                    && (target.getEndY() == this.getStartY());
-
-            return sameDirection || notSameDirection;
-        }
-
-
-        @Override
-        public int hashCode() {
-            return (int) ((31 * startX + 43)
-                    + (31 * startY + 3)
-                    + (31 * endX + 43)
-                    + (31 * endY + 3));
-        }
-
-        public float getStartX() {
-            return startX;
-        }
-
-        public void setStartX(float startX) {
-            this.startX = startX;
-        }
-
-        public float getStartY() {
-            return startY;
-        }
-
-        public void setStartY(float startY) {
-            this.startY = startY;
-        }
-
-        public float getEndX() {
-            return endX;
-        }
-
-        public void setEndX(float endX) {
-            this.endX = endX;
-        }
-
-        public float getEndY() {
-            return endY;
-        }
-
-        public void setEndY(float endY) {
-            this.endY = endY;
-        }
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 }

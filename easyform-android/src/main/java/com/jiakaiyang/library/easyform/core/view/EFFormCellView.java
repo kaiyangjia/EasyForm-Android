@@ -1,4 +1,4 @@
-package com.jiakaiyang.library.easyform.view;
+package com.jiakaiyang.library.easyform.core.view;
 
 import android.content.Context;
 import android.os.Build;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="EFFormView" >
+    <declare-styleable name="EFFormView">
         <attr name="frameColor" format="color" />
         <attr name="frameWidth" format="dimension" />
         <attr name="dividerColor" format="color" />
@@ -19,8 +19,8 @@
             <enum name="wrap" value="1" />
         </attr>
         <attr name="itemWidth" format="dimension" />
-        <attr name="itemHeight" format="dimension"  />
-        <attr name="itemGravity" format="enum" >
+        <attr name="itemHeight" format="dimension" />
+        <attr name="itemGravity" format="enum">
             <enum name="center" value="0" />
             <enum name="left" value="1" />
             <enum name="right" value="2" />
@@ -32,12 +32,7 @@
         <attr name="inputRows" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="BorderLinearLayout">
-        <attr name="border_left_size" format="dimension" />
-        <attr name="border_top_size" format="dimension" />
-        <attr name="border_right_size" format="dimension" />
-        <attr name="border_bottom_size" format="dimension" />
-        <attr name="border_enable" default="true" format="boolean" />
-        <attr name="border_color" format="color" />
+    <declare-styleable name="SimpleEFFormView">
+        <attr name="cellLayout" format="reference" />
     </declare-styleable>
 </resources>
