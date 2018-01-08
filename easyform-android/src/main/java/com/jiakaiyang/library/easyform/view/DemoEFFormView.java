@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.RequiresApi;
@@ -91,8 +92,8 @@ public class DemoEFFormView extends ViewGroup {
     //
     private float[] drawDividerLines;
     private Paint dividerPaint;
+    private Paint framePaint;
     private boolean drawn = false;
-    private Set<Line> drawnDividers = new HashSet<>();
     /* END------ this fields for the class ------*/
 
 
@@ -126,12 +127,55 @@ public class DemoEFFormView extends ViewGroup {
         init();
     }
 
+    /* ------START init methods ------*/
     private void init() {
         createNodes();
         createDividerPaint();
+        createFramePaint();
+
+        initParams();
+
+        resetPadding();
     }
 
+    /**
+     * 初始化xml参数
+     */
+    private void initParams() {
+
+    }
+
+    /**
+     * 重新设置 padding ，添加边框的适配
+     */
+    private void resetPadding() {
+        int paddingLeft = getPaddingLeft();
+        int paddingTop = getPaddingTop();
+
+        int halfDivider = dividerWidth >> 1;
+        paddingLeft += halfDivider;
+        paddingTop += halfDivider;
+
+        setPadding(paddingLeft, paddingTop, getPaddingRight(), getPaddingBottom());
+    }
+
+    /* ------END init methods ------*/
+
+
     /* ------START methods form super class ------*/
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        // 保证有一个最小的 padding值可以用来容纳边框的绘制
+        int halfDivider = dividerWidth >> 1;
+
+        left = Math.max(left, halfDivider);
+        top = Math.max(top, halfDivider);
+        right = Math.max(right, halfDivider);
+        bottom = Math.max(bottom, halfDivider);
+        super.setPadding(left, top, right, bottom);
+    }
+
     @Override
     protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
 
@@ -142,7 +186,9 @@ public class DemoEFFormView extends ViewGroup {
         super.dispatchDraw(canvas);
         if (!drawn) {
             drawDividers(canvas);
+            drawFrame(canvas);
         }
+
         drawn = true;
     }
 
@@ -154,11 +200,15 @@ public class DemoEFFormView extends ViewGroup {
     // TODO: 2018/1/8 把 drawLines 的形式替换成drawRect
     private void drawDividers(Canvas canvas) {
         Log.i(TAG, "drawDividers: ");
-        int height = getMeasuredHeight() - 70;
-        int width = getMeasuredWidth() - 70;
+        int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
 
-        int cellHeight = height / rowCount;
-        int cellWidth = width / columnCount;
+        int originX = getPaddingLeft();
+        int originY = getPaddingTop();
+        float[] originPoint = {originX, originY};
+
+        int cellHeight = (height - (rowCount + 1) * dividerWidth) / rowCount;
+        int cellWidth = (width - (columnCount + 1) * dividerWidth) / columnCount;
 
         for (EFNode[] nodes : mNodes) {
             for (EFNode node : nodes) {
@@ -166,45 +216,52 @@ public class DemoEFFormView extends ViewGroup {
                         + node.getIndexX()
                         + ", startY : " + node.getIndexY() + ", node == " + node.toString());
 
-                // 单向绘制就行，否则会重复
-                /*if (node.isShouldDrawLeft()) {
-                    float[] leftLine = EFNode.calculateDivider(node
-                            , EFNode.DIRECTION_LEFT
-                            , cellWidth, cellHeight);
+                // 单向绘制（只向右、向下）就行，否则会重复
 
-                    canvas.drawLines(leftLine, dividerPaint);
-                }*/
+                if (node.getIndexY() != 0
+                        && node.getIndexY() != rowCount) {
+                    if (node.isShouldDrawRight()) {
+                        float[] rightLine = EFNode.calculateDivider(node
+                                , originPoint
+                                , EFNode.DIRECTION_RIGHT
+                                , cellWidth, cellHeight);
+/*
+                    int offsetWidth = dividerWidth;
 
-                /*if (node.isShouldDrawTop()) {
-                    float[] topLine = EFNode.calculateDivider(node
-                            , EFNode.DIRECTION_TOP
-                            , cellWidth, cellHeight);
+                    int minIndex = 0;
+                    int maxIndex = 2;
+                    if (rightLine[0] > rightLine[2]) {
+                        minIndex = 2;
+                        maxIndex = 0;
+                    }
 
-                    canvas.drawLines(topLine, dividerPaint);
-                }*/
+                    // 处理四个角的小方块
+                    if ((node.getIndexX() == 0 && node.getIndexY() == 0)
+                            || (node.getIndexX() == 0 && node.getIndexY() == rowCount)) {
+                        // 左上角 , 左下角
+                        Log.i(TAG, "drawDividers: 左上角 , 左下角");
+                        rightLine[minIndex] -= offsetWidth;
+                    }
 
-                if (node.isShouldDrawRight()) {
-                    float[] rightLine = EFNode.calculateDivider(node
-                            , EFNode.DIRECTION_RIGHT
-                            , cellWidth, cellHeight);
+                    if ((node.getIndexX() == (columnCount - 1) && node.getIndexY() == 0)
+                            || (node.getIndexX() == (columnCount - 1) && node.getIndexY() == rowCount)) {
+                        // 右上角左边 , 右下角左边
+                        Log.i(TAG, "drawDividers: 右上角左边 , 右下角左边");
+                        rightLine[maxIndex] += (offsetWidth >> 2);
+                    }*/
 
-                    Line line = new Line(rightLine);
-
-                    if (drawnDividers.add(line)) {
-                        Log.d(TAG, "drawDividers: right");
                         canvas.drawLines(rightLine, dividerPaint);
                     }
                 }
 
-                if (node.isShouldDrawDown()) {
-                    float[] downLine = EFNode.calculateDivider(node
-                            , EFNode.DIRECTION_DOWM
-                            , cellWidth, cellHeight);
+                if (node.getIndexX() != 0
+                        && node.getIndexX() != columnCount) {
+                    if (node.isShouldDrawDown()) {
+                        float[] downLine = EFNode.calculateDivider(node
+                                , originPoint
+                                , EFNode.DIRECTION_DOWM
+                                , cellWidth, cellHeight);
 
-                    Line line = new Line(downLine);
-
-                    if (drawnDividers.add(line)) {
-                        Log.d(TAG, "drawDividers: down");
                         canvas.drawLines(downLine, dividerPaint);
                     }
                 }
@@ -212,6 +269,68 @@ public class DemoEFFormView extends ViewGroup {
         }
     }
 
+
+    private void drawFrame(Canvas canvas) {
+        Path path = new Path();
+
+        // todo 保存这些常用变量
+        int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
+
+        int originX = getPaddingLeft();
+        int originY = getPaddingTop();
+        float[] originPoint = {originX, originY};
+
+        int cellHeight = (height - (rowCount + 1) * dividerWidth) / rowCount;
+        int cellWidth = (width - (columnCount + 1) * dividerWidth) / columnCount;
+
+
+        float[] startNode = new float[2];
+        float[] coordinateNode = new float[2];
+
+        EFNode frameNode = mNodes[0][0];
+        EFNode.calculateCoordinateByIndex(
+                originPoint
+                , frameNode.getIndexX()
+                , frameNode.getIndexY()
+                , cellWidth
+                , cellHeight
+                , startNode);
+        path.moveTo(startNode[0], startNode[1]);
+
+        frameNode = mNodes[columnCount][0];
+        EFNode.calculateCoordinateByIndex(
+                originPoint
+                , frameNode.getIndexX()
+                , frameNode.getIndexY()
+                , cellWidth
+                , cellHeight
+                , coordinateNode);
+        path.lineTo(coordinateNode[0], coordinateNode[1]);
+
+        frameNode = mNodes[columnCount][rowCount];
+        EFNode.calculateCoordinateByIndex(
+                originPoint
+                , frameNode.getIndexX()
+                , frameNode.getIndexY()
+                , cellWidth
+                , cellHeight
+                , coordinateNode);
+        path.lineTo(coordinateNode[0], coordinateNode[1]);
+
+        frameNode = mNodes[0][rowCount];
+        EFNode.calculateCoordinateByIndex(
+                originPoint
+                , frameNode.getIndexX()
+                , frameNode.getIndexY()
+                , cellWidth
+                , cellHeight
+                , coordinateNode);
+        path.lineTo(coordinateNode[0], coordinateNode[1]);
+        path.close();
+
+        canvas.drawPath(path, framePaint);
+    }
 
     /**
      * create mNodes by the row count and column count.
@@ -236,6 +355,13 @@ public class DemoEFFormView extends ViewGroup {
         dividerPaint = new Paint();
         dividerPaint.setColor(dividerColor);
         dividerPaint.setStrokeWidth(dividerWidth);
+    }
+
+    private void createFramePaint() {
+        framePaint = new Paint();
+        framePaint.setStrokeWidth(dividerWidth);
+        framePaint.setColor(Color.GREEN);
+        framePaint.setStyle(Paint.Style.STROKE);
     }
 
     private void calculateLines(int formWidth, int formHeight) {

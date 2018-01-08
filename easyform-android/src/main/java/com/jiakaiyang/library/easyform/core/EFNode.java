@@ -95,6 +95,24 @@ public class EFNode {
     }
 
 
+    public static float[] calculateDivider(EFNode targetNode
+            , float[] originPoint
+            , int direction
+            , int cellWidth
+            , int cellHeight) {
+        if (originPoint == null
+                || originPoint.length < 2) {
+            throw new IllegalArgumentException("参数 originPoint 错误, originPoint的长度最少为2");
+        }
+
+        float[] result = calculateDivider(targetNode, direction, cellWidth, cellHeight);
+        result[0] += originPoint[0];
+        result[1] += originPoint[1];
+        result[2] += originPoint[0];
+        result[3] += originPoint[1];
+        return result;
+    }
+
     /**
      * 计算两个交点之间的线的坐标，坐标原点是相对于表格的左上角。
      *
@@ -154,7 +172,8 @@ public class EFNode {
      * @param cellHeight
      * @param returnValue
      */
-    public static void calculateCoordinateByIndex(int indexX
+    public static void calculateCoordinateByIndex(
+            int indexX
             , int indexY
             , int cellWidth
             , int cellHeight
@@ -166,6 +185,19 @@ public class EFNode {
 
         returnValue[0] = indexX * cellWidth;
         returnValue[1] = indexY * cellHeight;
+    }
+
+
+    public static void calculateCoordinateByIndex(
+            float[] originPoint
+            , int indexX
+            , int indexY
+            , int cellWidth
+            , int cellHeight
+            , float[] returnValue) {
+        calculateCoordinateByIndex(indexX, indexY, cellWidth, cellHeight, returnValue);
+        returnValue[0] += originPoint[0];
+        returnValue[1] += originPoint[1];
     }
 
     @Override
