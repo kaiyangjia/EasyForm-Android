@@ -1,6 +1,7 @@
 package com.jiakaiyang.library.easyform.core.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.jiakaiyang.library.easyform.R;
 import com.jiakaiyang.library.easyform.core.EFFormController;
 import com.jiakaiyang.library.easyform.core.EFNode;
 
@@ -89,35 +91,40 @@ public abstract class EFFormView extends ViewGroup {
 
     public EFFormView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs, defStyleAttr);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public EFFormView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(context, attrs, defStyleAttr);
     }
 
     /* ------START init methods ------*/
-    private void init() {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         createNodes();
         createDividerPaint();
         createFramePaint();
 
-        initParams();
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EFFormView);
+        initParams(a);
+        a.recycle();
 
         resetPadding();
-    }
-
-    protected void onInit() {
-
     }
 
     /**
      * 初始化xml参数
      */
-    private void initParams() {
+    private void initParams(TypedArray array) {
+        setFrameColor(array.getColor(R.styleable.EFFormView_frameColor, Color.GREEN));
+        setFrameWidth(array.getDimensionPixelSize(R.styleable.EFFormView_frameWidth, 0));
 
+        setDividerColor(array.getColor(R.styleable.EFFormView_dividerColor, Color.RED));
+        setDividerWidth(array.getDimensionPixelSize(R.styleable.EFFormView_dividerWidth, 0));
+
+        setRowCount(array.getInt(R.styleable.EFFormView_rowCount, 2));
+        setColumnCount(array.getInt(R.styleable.EFFormView_columnCount, 3));
     }
 
     /**
@@ -363,5 +370,37 @@ public abstract class EFFormView extends ViewGroup {
 
     public void setColumnCount(int columnCount) {
         this.columnCount = columnCount;
+    }
+
+    public int getFrameColor() {
+        return frameColor;
+    }
+
+    public void setFrameColor(int frameColor) {
+        this.frameColor = frameColor;
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(int frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public int getDividerColor() {
+        return dividerColor;
+    }
+
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
+    }
+
+    public int getDividerWidth() {
+        return dividerWidth;
+    }
+
+    public void setDividerWidth(int dividerWidth) {
+        this.dividerWidth = dividerWidth;
     }
 }

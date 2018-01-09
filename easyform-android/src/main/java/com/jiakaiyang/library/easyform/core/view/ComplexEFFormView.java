@@ -12,6 +12,8 @@ import com.jiakaiyang.library.easyform.core.EFFormController;
  */
 
 public class ComplexEFFormView extends EFFormView {
+    private static final String TAG = "ComplexEFFormView";
+
     private EFFormController formController;
 
     public ComplexEFFormView(Context context) {
