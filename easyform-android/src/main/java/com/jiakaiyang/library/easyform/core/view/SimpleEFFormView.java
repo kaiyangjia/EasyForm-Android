@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jiakaiyang.library.easyform.R;
+import com.jiakaiyang.library.easyform.core.EFNode;
 
 /**
  * Created by jia on 2018/1/8.
@@ -18,9 +19,13 @@ import com.jiakaiyang.library.easyform.R;
 
 public class SimpleEFFormView extends EFFormView {
     private static final String TAG = "SimpleEFFormView";
+    private static final int TAG_NODE = 100;
     // 单元格的布局文件
     private @LayoutRes
     int cellLayout = -1;
+
+    private int cellWidth;
+    private int cellHeight;
 
     public SimpleEFFormView(Context context) {
         this(context, null, 0);
@@ -52,10 +57,14 @@ public class SimpleEFFormView extends EFFormView {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        int length = getRowCount() * getColumnCount();
-        for (int i = 0; i < length; i++) {
-            View child = inflater.inflate(cellLayout, null);
-            addView(child);
+        // TODO: 2018/1/12 this is wrong
+        EFNode[][] efNodes = getNodes();
+        for (EFNode[] nodes : efNodes) {
+            for (EFNode node : nodes) {
+                View child = inflater.inflate(cellLayout, null);
+                child.setTag(TAG_NODE, node);
+                addView(child);
+            }
         }
     }
 
@@ -64,6 +73,54 @@ public class SimpleEFFormView extends EFFormView {
      */
     private void initParams(TypedArray array) {
         cellLayout = array.getResourceId(R.styleable.SimpleEFFormView_cellLayout, -1);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        cellWidth = width / getColumnCount();
+        cellHeight = height / getRowCount();
+
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+
+            child.measure(
+                    MeasureSpec.makeMeasureSpec(cellWidth,
+                            MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(cellHeight,
+                            MeasureSpec.EXACTLY));
+        }
+    }
+
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int originX = getPaddingLeft();
+        int originY = getPaddingTop();
+        float[] originPoint = {originX, originY};
+
+        float[] returnValue = new float[2];
+
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            EFNode childNode = (EFNode) child.getTag(TAG_NODE);
+
+            EFNode.calculateCoordinateByIndex(originPoint
+                    , childNode.getIndexX()
+                    , childNode.getIndexY()
+                    , cellWidth
+                    , cellHeight
+                    , returnValue);
+
+
+        }
     }
 
     public int getCellLayout() {

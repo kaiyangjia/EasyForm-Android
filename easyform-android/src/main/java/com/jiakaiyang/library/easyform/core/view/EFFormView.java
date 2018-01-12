@@ -403,4 +403,9 @@ public abstract class EFFormView extends ViewGroup {
     public void setDividerWidth(int dividerWidth) {
         this.dividerWidth = dividerWidth;
     }
+
+
+    public EFNode[][] getNodes() {
+        return mNodes;
+    }
 }
