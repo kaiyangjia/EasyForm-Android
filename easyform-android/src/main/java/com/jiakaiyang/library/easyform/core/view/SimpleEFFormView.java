@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jiakaiyang.library.easyform.R;
+import com.jiakaiyang.library.easyform.core.EFCell;
 import com.jiakaiyang.library.easyform.core.EFNode;
 
 /**
@@ -19,13 +20,15 @@ import com.jiakaiyang.library.easyform.core.EFNode;
 
 public class SimpleEFFormView extends EFFormView {
     private static final String TAG = "SimpleEFFormView";
-    private static final int TAG_NODE = 100;
+    private static final int TAG_CELL = 100;
     // 单元格的布局文件
     private @LayoutRes
     int cellLayout = -1;
 
     private int cellWidth;
     private int cellHeight;
+
+    private EFCell[][] mCells;
 
     public SimpleEFFormView(Context context) {
         this(context, null, 0);
@@ -55,17 +58,7 @@ public class SimpleEFFormView extends EFFormView {
             return;
         }
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-
-        // TODO: 2018/1/12 this is wrong
-        EFNode[][] efNodes = getNodes();
-        for (EFNode[] nodes : efNodes) {
-            for (EFNode node : nodes) {
-                View child = inflater.inflate(cellLayout, null);
-                child.setTag(TAG_NODE, node);
-                addView(child);
-            }
-        }
+        createCells();
     }
 
     /**
@@ -73,6 +66,28 @@ public class SimpleEFFormView extends EFFormView {
      */
     private void initParams(TypedArray array) {
         cellLayout = array.getResourceId(R.styleable.SimpleEFFormView_cellLayout, -1);
+    }
+
+
+    private void createCells() {
+        int rowCount = getRowCount();
+        int columnCount = getColumnCount();
+        mCells = new EFCell[columnCount][rowCount];
+        EFNode[][] nodes = getNodes();
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                EFCell efCell = new EFCell(j, i);
+                View cellView = inflater.inflate(cellLayout, this, true);
+                // set tag
+                cellView.setTag(efCell);
+                efCell.setRealCellView(cellView);
+                efCell.setNodes(nodes);
+                mCells[j][i] = efCell;
+            }
+        }
     }
 
     @Override
@@ -96,6 +111,8 @@ public class SimpleEFFormView extends EFFormView {
                     MeasureSpec.makeMeasureSpec(cellHeight,
                             MeasureSpec.EXACTLY));
         }
+
+        setMeasuredDimension(width, height);
     }
 
 
@@ -103,23 +120,13 @@ public class SimpleEFFormView extends EFFormView {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int originX = getPaddingLeft();
         int originY = getPaddingTop();
-        float[] originPoint = {originX, originY};
-
-        float[] returnValue = new float[2];
+        int[] originPoint = {originX, originY};
 
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            EFNode childNode = (EFNode) child.getTag(TAG_NODE);
-
-            EFNode.calculateCoordinateByIndex(originPoint
-                    , childNode.getIndexX()
-                    , childNode.getIndexY()
-                    , cellWidth
-                    , cellHeight
-                    , returnValue);
-
-
+            EFCell efCell = (EFCell) child.getTag();
+            efCell.layout(originPoint, cellWidth, cellHeight);
         }
     }
 
